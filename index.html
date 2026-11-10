@@ -285,6 +285,7 @@ body{font-family:var(--f-txt);background:
 /* superfícies */
 .masthead,.topnav{background:rgba(7,14,24,.80);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px)}
 .masthead{border-bottom:0}
+.topnav{border-bottom:0}
 .card{background:var(--panel);border-color:var(--line);border-radius:16px;box-shadow:var(--sombra);overflow:hidden}
 .scn{background:var(--vidro);border-color:var(--line);border-radius:16px}
 .card .hd{border-bottom-color:var(--line)}
@@ -408,6 +409,27 @@ tbody tr:hover{background:rgba(120,160,220,.08)}
 .fase-trow:last-child{border-bottom:none}
 .fase-trow b{color:var(--ink);font-weight:700;white-space:nowrap}.fase-trow b.g{color:var(--teal)}.fase-trow b.gold{color:var(--ambar)}
 #uc_addfase{margin-top:2px}
+/* PSA nota personalizada */
+.pl-chd{display:grid;grid-template-columns:22px 1fr 96px auto;gap:10px;font-size:10.5px;color:var(--faint);font-weight:700;text-transform:uppercase;letter-spacing:.4px;padding:4px 0 6px}
+.pl-crit{display:grid;grid-template-columns:22px 1fr 96px auto;gap:10px;align-items:center;padding:8px 0;border-bottom:1px solid var(--line)}
+.pl-crit input[type=checkbox]{width:16px;height:16px;margin:0;cursor:pointer;justify-self:center}
+.pl-crit .pl-name,.pl-crit .pl-peso{width:100%;font-size:13.5px;padding:7px 9px}
+.pl-x{appearance:none;background:none;border:1px solid var(--line2);color:var(--faint);border-radius:7px;padding:4px 9px;font:inherit;font-size:11px;cursor:pointer;white-space:nowrap}
+.pl-x:hover{border-color:var(--brick);color:var(--brick)}
+.pl-teto{display:flex;gap:14px;align-items:center;margin-top:16px;flex-wrap:wrap}
+#pl_add{margin-top:4px}
+.uc-total{margin:18px 0;padding:20px 22px;border-radius:14px;background:linear-gradient(140deg,rgba(56,189,248,.13),rgba(52,211,153,.10));border:1px solid var(--line2)}
+.uc-total-lb{font-family:var(--f-tit);font-size:12px;letter-spacing:.7px;text-transform:uppercase;color:var(--accent);font-weight:700}
+.uc-total-num{font-family:var(--f-disp);font-size:40px;color:var(--ink);line-height:1.05;margin:7px 0 7px}
+.uc-total-ex{font-size:13px;color:var(--slate);line-height:1.6}.uc-total-ex b{color:var(--ink)}
+.uc-total.alert{background:linear-gradient(140deg,rgba(251,191,36,.15),rgba(244,114,182,.10));border-color:rgba(251,191,36,.32)}
+.uc-total.alert .uc-total-num{color:var(--ambar)}
+.fase-final{display:flex;justify-content:space-between;gap:12px;font-size:13px;padding:8px 0 2px;margin-top:4px;border-top:1px dashed var(--line2)}
+.fase-final span{color:var(--accent);font-weight:700;font-family:var(--f-tit);font-size:11.5px;letter-spacing:.5px;text-transform:uppercase}
+.fase-final b{color:var(--ink);font-weight:700}
+.fase-trow.final{border-bottom:none;border-top:1px solid var(--line2);margin-top:4px;padding-top:11px}
+.fase-trow.final span{color:var(--accent);font-family:var(--f-tit);font-size:12px;letter-spacing:.5px;text-transform:uppercase;font-weight:700}
+.fase-trow.final b{font-size:16px}
 </style></head><body>
 
 <div class="masthead">
@@ -753,7 +775,8 @@ tbody tr:hover{background:rgba(120,160,220,.08)}
  <!-- ============ JANELA PSA (RS / RPPN) ============ -->
  <div id="win_psa" style="display:none">
   <div class="ptabs">
-   <button class="ptab on" data-pt="calc">Calculadora</button>
+   <button class="ptab on" data-pt="calc">Calculadora (edital RS)</button>
+   <button class="ptab" data-pt="livre">Nota personalizada</button>
    <button class="ptab" data-pt="tabua">Tábua de valoração</button>
    <button class="ptab" data-pt="sobre">Como funciona</button>
   </div>
@@ -766,15 +789,18 @@ tbody tr:hover{background:rgba(120,160,220,.08)}
     <div class="psa-sub">Uma <b>RPPN</b> (Reserva Particular do Patrimônio Natural) é uma área que um proprietário cria <b>voluntariamente</b> dentro da sua terra para proteger a natureza, para sempre. O Estado <b>paga esse dono todo ano</b> por manter a área conservada. Quanto mais a reserva presta serviços ambientais — <b>biodiversidade, água e boa gestão</b> — maior é a nota <b>N</b> e maior o pagamento por hectare. Preencha abaixo para estimar o valor.</div>
     <div class="psa-fxbox">
      <div class="fx-lab">A fórmula do edital (item 10)</div>
-     <div class="fx-main">VALOR<sub>por ano</sub> = <span class="fx-x">R$ 100</span> &times; (1 + <span class="fx-n">N</span>) &times; <span class="fx-z">Z</span></div>
-     <div class="fx-leg"><span class="fx-x"><b>R$ 100</b></span> = valor-base pago por hectare &nbsp;&middot;&nbsp; <span class="fx-n"><b>N</b></span> = nota ambiental da reserva (0 a 9, somada na Tábua de Valoração) &nbsp;&middot;&nbsp; <span class="fx-z"><b>Z</b></span> = tamanho da reserva, em hectares &nbsp;&middot;&nbsp; limite de <b>R$ 40.000/ano</b> por reserva</div>
+     <div class="fx-main">VALOR<sub>por ano</sub> = <span class="fx-x" id="psa_base_show">R$ 100</span> &times; (1 + <span class="fx-n">N</span>) &times; <span class="fx-z">Z</span></div>
+     <div class="fx-leg"><span class="fx-x"><b id="psa_base_show2">R$ 100</b></span> = valor-base por hectare (<b>X</b>, ajustável — referencia um % do arrendamento conforme a região) &nbsp;&middot;&nbsp; <span class="fx-n"><b>N</b></span> = nota ambiental da reserva (0 a 9, somada na Tábua de Valoração) &nbsp;&middot;&nbsp; <span class="fx-z"><b>Z</b></span> = tamanho da reserva, em hectares &nbsp;&middot;&nbsp; limite de <b>R$ 40.000/ano</b> por reserva</div>
     </div>
    </div>
 
    <div class="psa-grid">
     <div class="card">
-     <div class="hd"><h2>1 &middot; Tamanho da reserva</h2></div>
-     <label class="psa-ha-lab">Área da RPPN em hectares <span style="color:#7d8a92;font-weight:400">(o <b style="color:#4d6472">Z</b> da fórmula)</span></label>
+     <div class="hd"><h2>1 &middot; Valor-base e tamanho</h2></div>
+     <label class="psa-ha-lab">Valor-base por hectare/ano <span style="color:#7d8a92;font-weight:400">(o <b style="color:#4d6472">X</b> da fórmula)</span></label>
+     <input id="psa_base" type="number" value="100" min="0" step="10" class="psa-input">
+     <div class="psa-ha-hint">Padrão do edital: <b>R$ 100</b>. Esse valor referencia um percentual do valor de arrendamento conforme o preço da região — ajuste se tiver a referência local.</div>
+     <label class="psa-ha-lab" style="margin-top:16px">Área da RPPN em hectares <span style="color:#7d8a92;font-weight:400">(o <b style="color:#4d6472">Z</b> da fórmula)</span></label>
      <input id="psa_ha" type="number" value="50" min="0" step="1" class="psa-input">
      <div class="psa-ha-hint">1 hectare = 10.000 m² (um quadrado de 100 m × 100 m).</div>
 
@@ -860,7 +886,7 @@ tbody tr:hover{background:rgba(120,160,220,.08)}
     <div class="hd"><h2>Como funciona o cálculo</h2></div>
     <p>O valor <b>anual</b> pago a cada RPPN sai de uma fórmula única (Edital PEPSA nº 01/2024, item 10):</p>
     <div class="psa-fxbox" style="margin:4px 0 12px"><div class="fx-main" style="font-size:22px">VALOR = <span class="fx-x">R$ 100</span> &times; (1 + <span class="fx-n">N</span>) &times; <span class="fx-z">Z</span></div></div>
-    <p><b>R$ 100 (X)</b> é o valor-base por hectare. <b>N</b> é a pontuação ambiental da Tábua de Valoração (0 a 9): quanto mais conservada, conectada, com nascentes e bem gerida a reserva, maior o N. <b>Z</b> é a área em hectares. O termo <b>(1 + N)</b> multiplica o valor-base por <b>1</b> (N=0) a <b>10</b> (N=9) — ou seja, de R$ 100 a R$ 1.000 por hectare/ano.</p>
+    <p><b>X</b> é o valor-base por hectare (<b>R$ 100</b> no edital, mas <b>ajustável na calculadora</b>: ele referencia um percentual do valor de arrendamento conforme o preço da região). <b>N</b> é a pontuação ambiental da Tábua de Valoração (0 a 9): quanto mais conservada, conectada, com nascentes e bem gerida a reserva, maior o N. <b>Z</b> é a área em hectares. O termo <b>(1 + N)</b> multiplica o valor-base por <b>1</b> (N=0) a <b>10</b> (N=9) — ou seja, de X a 10·X por hectare/ano.</p>
     <p><b>Teto:</b> qualquer que seja o resultado, paga-se no máximo <b>R$ 40.000/ano</b> por reserva. O pagamento é feito em <b>parcelas</b>, condicionado ao cumprimento das ações do Projeto Individual (vistoria/monitoramento da SEMA).</p>
     <div class="psa-ex"><b>Exemplo:</b> RPPN de 30 ha que marca vegetação &gt;50% (1) + restauração (1) + nascentes (1) + restauração APP (1) + plano de manejo com ações (1) + mapa (1) &rarr; N = 6,0. &nbsp; VALOR = 100 &times; (1+6) &times; 30 = 100 &times; 7 &times; 30 = <b>R$ 21.000/ano</b>.</div>
     <p class="note" style="margin-top:12px;line-height:1.6">Base legal: Lei Estadual 15.434/2020 (art. 21) · Decreto 56.640/2022 (institui o PEPSA) · Decreto 57.065/2023 · Edital PEPSA nº 01/2024 (RPPN) e Anexo 2 (Tábua de Valoração). Órgão: Secretaria do Meio Ambiente e Infraestrutura do RS (SEMA/RS) e Comitê Gestor do PEPSA. Esta é a métrica do <b>subprograma de RPPN</b>; outros subprogramas (ex.: arroz) têm editais e metodologias próprias.</p>
@@ -879,6 +905,47 @@ tbody tr:hover{background:rgba(120,160,220,.08)}
      <li><b>Aceiro</b> — faixa de terra limpa (sem vegetação) que impede o fogo de se espalhar.</li>
      <li><b>N (nota / pontuação)</b> — soma dos pontos da Tábua de Valoração (0 a 9). Mede a qualidade ambiental da reserva e multiplica o valor-base por hectare.</li>
     </ul>
+   </div>
+  </div>
+
+  <!-- ABA NOTA PERSONALIZADA -->
+  <div class="ppane" id="pp_livre">
+   <div class="card">
+    <div class="hd"><h2 class="serif">Nota ambiental personalizada</h2>
+     <div class="d">Crie os seus próprios critérios (nome + multiplicador), ligue/desligue cada um e veja o efeito. Você define o valor-base, o tamanho e, se quiser, um teto. A aba <b>Calculadora (edital RS)</b> continua intacta ao lado.</div></div>
+    <div class="psa-fxbox">
+     <div class="fx-lab">Mesma fórmula, critérios seus</div>
+     <div class="fx-main">VALOR = <span class="fx-x" id="pl_base_show">R$ 100</span> &times; (1 + <span class="fx-n">N</span>) &times; <span class="fx-z">Z</span></div>
+     <div class="fx-leg"><span class="fx-n"><b>N</b></span> = soma dos multiplicadores dos critérios que você marcar &nbsp;&middot;&nbsp; <span class="fx-x"><b>X</b></span> = valor-base por hectare &nbsp;&middot;&nbsp; <span class="fx-z"><b>Z</b></span> = hectares &nbsp;&middot;&nbsp; o <b>teto</b> é opcional e definido por você.</div>
+    </div>
+   </div>
+
+   <div class="psa-grid">
+    <div class="card">
+     <div class="hd"><h2>1 &middot; Parâmetros</h2></div>
+     <label class="psa-ha-lab">Valor-base por hectare/ano <span style="color:#7d8a92;font-weight:400">(X)</span></label>
+     <input id="pl_base" type="number" value="100" min="0" step="10" class="psa-input">
+     <label class="psa-ha-lab" style="margin-top:16px">Área em hectares <span style="color:#7d8a92;font-weight:400">(Z)</span></label>
+     <input id="pl_ha" type="number" value="50" min="0" step="1" class="psa-input">
+     <div class="pl-teto">
+      <label class="opt2" style="grid-template-columns:20px auto;padding:0;cursor:pointer"><input type="checkbox" id="pl_teto_on"><span class="ot">Aplicar teto anual</span></label>
+      <input id="pl_teto" type="number" value="40000" min="0" step="1000" class="psa-input" style="width:150px">
+     </div>
+     <div class="psa-ha-hint" style="margin-top:6px">Sem o teto marcado, o valor roda livre. Marque e defina o limite que quiser.</div>
+
+     <div class="hd" style="margin-top:22px"><h2>2 &middot; Critérios</h2><div class="d">Marque para usar; o nome e o peso são seus. Adicione quantos quiser.</div></div>
+     <div id="pl_crits"></div>
+     <button type="button" class="btn" id="pl_add">+ Adicionar critério</button>
+    </div>
+
+    <div class="card psa-res">
+     <div class="hd"><h2>Resultado</h2></div>
+     <div style="font-size:12.5px;color:#5d6f79">Nota ambiental <b id="pl_N" style="color:#1b6245">0,00</b> &mdash; soma dos critérios marcados</div>
+     <div class="nmeter"><i id="pl_meter" style="width:0%"></i></div>
+     <div class="psa-step" id="pl_fx">&mdash;</div>
+     <div class="psa-big"><div class="lb">Pagamento por ano</div><div class="bnum" id="pl_pago">&mdash;</div><div class="ex" id="pl_cap" style="display:none;color:#a5493f">cortado pelo teto</div></div>
+     <div class="psa-mini">Multiplicador <b id="pl_mult">&mdash;</b> &middot; equivale a <b id="pl_rha">&mdash;</b><br>Valor pela fórmula antes do teto: <b id="pl_bruto">&mdash;</b></div>
+    </div>
    </div>
   </div>
  </div>
@@ -913,9 +980,17 @@ tbody tr:hover{background:rgba(120,160,220,.08)}
      <div class="hint">Custo total de implantação declarado no licenciamento.</div>
     </div>
     <div class="uc-field">
-     <label>Setor da obra (MIP · RS — 52 setores)</label>
+     <label>MIP (base de setores)</label>
+     <select id="uc_base" class="uc-sel">
+      <option value="rs">RS — 52 setores (com pegada de carbono)</option>
+      <option value="br">Brasil — 68 setores</option>
+     </select>
+     <div class="hint">O RS tem a camada de carbono (SEEG). A MIP Brasil dá os setores e a compensação; a <b>pegada de carbono</b> fica disponível só na MIP RS.</div>
+    </div>
+    <div class="uc-field">
+     <label>Setor da obra</label>
      <select id="uc_setor" class="uc-sel"></select>
-     <div class="hint">Define a cadeia produtiva usada para estimar a pegada de carbono — igual à janela <b>Impacto econômico</b> (lente de pegada completa do RS).</div>
+     <div class="hint">Define a cadeia produtiva usada para estimar a pegada de carbono — igual à janela <b>Impacto econômico</b> (lente de pegada completa).</div>
     </div>
    </div>
 
@@ -934,7 +1009,12 @@ tbody tr:hover{background:rgba(120,160,220,.08)}
     <div class="uc-row"><span>Custo social do carbono emitido</span><span class="v" id="uc_ccost">—</span></div>
     <div class="uc-row"><span>Equivale a quanto do investimento</span><span class="v" id="uc_cpct">—</span></div>
     <div class="uc-row"><span>Preço do carbono usado</span><span class="v" id="uc_cpreco">—</span></div>
-    <div class="uc-note">O <b>custo do carbono</b> e a <b>compensação de 0,5%</b> são contas independentes: o primeiro valora as emissões da cadeia; o segundo é a obrigação legal do SNUC sobre o valor da obra. O preço do carbono segue a base escolhida na janela <b>Impacto econômico</b>.</div>
+    <div class="uc-big" style="margin-top:12px">
+     <div class="lb">Diferença: custo do carbono − compensação 0,5%</div>
+     <div class="bnum" id="uc_cdif" style="font-size:26px">—</div>
+     <div class="ex" id="uc_cdifex">quanto a externalidade de carbono supera a compensação legal</div>
+    </div>
+    <div class="uc-note">O <b>custo do carbono</b> e a <b>compensação de 0,5%</b> são contas independentes: o primeiro valora as emissões da cadeia; o segundo é a obrigação legal do SNUC sobre o valor da obra. A <b>diferença</b> mostra o quanto a externalidade de carbono costuma superar a compensação. O preço do carbono segue a base escolhida na janela <b>Impacto econômico</b>.</div>
    </div>
   </div>
  </div>
@@ -1018,6 +1098,12 @@ tbody tr:hover{background:rgba(120,160,220,.08)}
 
     <div class="uc-verdict ok" id="uc_verdict">—</div>
    </div>
+  </div>
+
+  <div class="uc-total" id="uc_total_box">
+   <div class="uc-total-lb">Valor final total da compensação</div>
+   <div class="uc-total-num" id="uc_total_num">—</div>
+   <div class="uc-total-ex" id="uc_total_ex">—</div>
   </div>
 
   <div class="card" id="uc_fases_card">
@@ -1455,22 +1541,75 @@ function renderPSA(){
   document.querySelectorAll('#pp_calc .tsel').forEach(s=>N+=parseFloat(s.value));
   N=Math.round(N*100)/100;
   const ha=Math.max(0,parseFloat($("psa_ha").value)||0);
-  const mult=1+N, bruto=100*mult*ha, TETO=40000, pago=Math.min(bruto,TETO);
+  const base=Math.max(0,parseFloat($("psa_base").value)||0);
+  const mult=1+N, bruto=base*mult*ha, TETO=40000, pago=Math.min(bruto,TETO);
   const br=n=>'R$ '+Math.round(n).toLocaleString('pt-BR');
   const nf=n=>n.toLocaleString('pt-BR',{minimumFractionDigits:2,maximumFractionDigits:2});
   $("psa_N").textContent=nf(N);
   var mt=$("psa_meter"); if(mt) mt.style.width=(N/9*100)+'%';
   $("psa_mult").textContent='× '+nf(mult);
-  $("psa_rha").textContent=br(100*mult)+' por hectare/ano';
+  $("psa_rha").textContent=br(base*mult)+' por hectare/ano';
   $("psa_bruto").textContent=br(bruto);
   $("psa_pago").textContent=br(pago);
   $("psa_cap").style.display = bruto>TETO ? '' : 'none';
-  $("psa_fx").innerHTML='R$ 100 × (1 + '+nf(N)+') × '+ha.toLocaleString('pt-BR')+' ha<br><b>= '+br(bruto)+' por ano</b>'+(bruto>TETO?' → pago '+br(TETO)+' (limite)':'');
+  if($("psa_base_show")) $("psa_base_show").textContent=br(base);
+  if($("psa_base_show2")) $("psa_base_show2").textContent=br(base);
+  $("psa_fx").innerHTML=br(base)+' × (1 + '+nf(N)+') × '+ha.toLocaleString('pt-BR')+' ha<br><b>= '+br(bruto)+' por ano</b>'+(bruto>TETO?' → pago '+br(TETO)+' (limite)':'');
 }
 function setPsaTab(pt){
   document.querySelectorAll('.ptab').forEach(x=>x.classList.toggle('on',x.dataset.pt===pt));
   document.querySelectorAll('.ppane').forEach(p=>p.classList.toggle('on',p.id==='pp_'+pt));
+  if(pt==='livre') plSync();
 }
+/* ----- PSA: nota personalizada (critérios livres) ----- */
+let PL_CRITS=null;
+function plDefaults(){ return [
+  {name:'Tem alvará / licença em dia', peso:1, on:true},
+  {name:'Mais de 50% com vegetação nativa', peso:1, on:false},
+  {name:'Nascentes protegidas', peso:0.5, on:false}
+];}
+function buildPl(){
+  const c=$("pl_crits"); if(!c) return;
+  let h='<div class="pl-chd"><span>usar</span><span>critério</span><span>multiplic.</span><span></span></div>';
+  PL_CRITS.forEach((k,i)=>{
+    h+='<div class="pl-crit">'
+     +'<input type="checkbox" class="pl-f" data-i="'+i+'" data-k="on"'+(k.on?' checked':'')+'>'
+     +'<input type="text" class="pl-f pl-name" data-i="'+i+'" data-k="name" value="'+String(k.name||'').replace(/"/g,'&quot;')+'" placeholder="ex.: tem alvará">'
+     +'<input type="number" class="pl-f pl-peso" data-i="'+i+'" data-k="peso" step="0.25" min="0" value="'+k.peso+'">'
+     +'<button type="button" class="pl-x" data-i="'+i+'">remover</button></div>';
+  });
+  c.innerHTML=h; computePl();
+}
+function readPl(){
+  document.querySelectorAll('#pl_crits .pl-f').forEach(el=>{
+    const i=+el.dataset.i,kk=el.dataset.k; if(!PL_CRITS[i])return;
+    if(kk==='on')PL_CRITS[i].on=el.checked;
+    else if(kk==='peso')PL_CRITS[i].peso=parseFloat(el.value)||0;
+    else PL_CRITS[i].name=el.value;
+  });
+}
+function computePl(){
+  if(!PL_CRITS) return; readPl();
+  let N=0,maxN=0; PL_CRITS.forEach(k=>{maxN+=(k.peso||0); if(k.on)N+=(k.peso||0);});
+  N=Math.round(N*100)/100;
+  const base=Math.max(0,parseFloat($("pl_base").value)||0);
+  const ha=Math.max(0,parseFloat($("pl_ha").value)||0);
+  const mult=1+N, bruto=base*mult*ha;
+  const tetoOn=$("pl_teto_on").checked, teto=Math.max(0,parseFloat($("pl_teto").value)||0);
+  const pago=tetoOn?Math.min(bruto,teto):bruto;
+  const br=n=>'R$ '+Math.round(n).toLocaleString('pt-BR');
+  const nf=n=>n.toLocaleString('pt-BR',{minimumFractionDigits:2,maximumFractionDigits:2});
+  if($("pl_base_show")) $("pl_base_show").textContent=br(base);
+  $("pl_N").textContent=nf(N);
+  var mt=$("pl_meter"); if(mt) mt.style.width=(maxN>0?Math.min(100,N/maxN*100):0)+'%';
+  $("pl_mult").textContent='× '+nf(mult);
+  $("pl_rha").textContent=br(base*mult)+' por hectare/ano';
+  $("pl_bruto").textContent=br(bruto);
+  $("pl_pago").textContent=br(pago);
+  $("pl_cap").style.display=(tetoOn && bruto>teto)?'':'none';
+  $("pl_fx").innerHTML=br(base)+' × (1 + '+nf(N)+') × '+ha.toLocaleString('pt-BR')+' ha<br><b>= '+br(bruto)+' por ano</b>'+(tetoOn&&bruto>teto?' → pago '+br(teto)+' (teto)':'');
+}
+function plSync(){ if(PL_CRITS===null){ PL_CRITS=plDefaults(); buildPl(); } else computePl(); }
 function setWin(w){
   document.querySelectorAll('.wbtn').forEach(x=>x.classList.toggle('on',x.dataset.w===w));
   $("win_mip").style.display=w==='mip'?'':'none';
@@ -1484,16 +1623,32 @@ document.querySelectorAll('.wbtn').forEach(b=>b.addEventListener('click',functio
 document.querySelectorAll('.ptab').forEach(b=>b.addEventListener('click',function(){setPsaTab(this.dataset.pt);}));
 document.querySelectorAll('#pp_calc .tbx, #pp_calc .tsel').forEach(el=>el.addEventListener('change',renderPSA));
 $("psa_ha").addEventListener('input',renderPSA);
+$("psa_base").addEventListener('input',renderPSA);
 renderPSA();
+// nota personalizada
+$("pl_add").addEventListener('click',function(){ if(!PL_CRITS)PL_CRITS=[]; PL_CRITS.push({name:'',peso:1,on:true}); buildPl(); });
+$("pl_crits").addEventListener('input',computePl);
+$("pl_crits").addEventListener('change',computePl);
+$("pl_crits").addEventListener('click',function(e){var b=e.target.closest('.pl-x'); if(b){ PL_CRITS.splice(+b.dataset.i,1); buildPl(); }});
+['pl_base','pl_ha','pl_teto'].forEach(id=>$(id).addEventListener('input',computePl));
+$("pl_teto_on").addEventListener('change',computePl);
+plSync();
 
 /* ============ Janela: Impacto Unidade de Conservação ============ */
 const INFL={"meses":[200001,200002,200003,200004,200005,200006,200007,200008,200009,200010,200011,200012,200101,200102,200103,200104,200105,200106,200107,200108,200109,200110,200111,200112,200201,200202,200203,200204,200205,200206,200207,200208,200209,200210,200211,200212,200301,200302,200303,200304,200305,200306,200307,200308,200309,200310,200311,200312,200401,200402,200403,200404,200405,200406,200407,200408,200409,200410,200411,200412,200501,200502,200503,200504,200505,200506,200507,200508,200509,200510,200511,200512,200601,200602,200603,200604,200605,200606,200607,200608,200609,200610,200611,200612,200701,200702,200703,200704,200705,200706,200707,200708,200709,200710,200711,200712,200801,200802,200803,200804,200805,200806,200807,200808,200809,200810,200811,200812,200901,200902,200903,200904,200905,200906,200907,200908,200909,200910,200911,200912,201001,201002,201003,201004,201005,201006,201007,201008,201009,201010,201011,201012,201101,201102,201103,201104,201105,201106,201107,201108,201109,201110,201111,201112,201201,201202,201203,201204,201205,201206,201207,201208,201209,201210,201211,201212,201301,201302,201303,201304,201305,201306,201307,201308,201309,201310,201311,201312,201401,201402,201403,201404,201405,201406,201407,201408,201409,201410,201411,201412,201501,201502,201503,201504,201505,201506,201507,201508,201509,201510,201511,201512,201601,201602,201603,201604,201605,201606,201607,201608,201609,201610,201611,201612,201701,201702,201703,201704,201705,201706,201707,201708,201709,201710,201711,201712,201801,201802,201803,201804,201805,201806,201807,201808,201809,201810,201811,201812,201901,201902,201903,201904,201905,201906,201907,201908,201909,201910,201911,201912,202001,202002,202003,202004,202005,202006,202007,202008,202009,202010,202011,202012,202101,202102,202103,202104,202105,202106,202107,202108,202109,202110,202111,202112,202201,202202,202203,202204,202205,202206,202207,202208,202209,202210,202211,202212,202301,202302,202303,202304,202305,202306,202307,202308,202309,202310,202311,202312,202401,202402,202403,202404,202405,202406,202407,202408,202409,202410,202411,202412,202501,202502,202503,202504,202505,202506,202507,202508,202509,202510,202511,202512,202601,202602,202603,202604,202605,202606,202607,202608,202609],"igpm":[1.0124,1.015943,1.017467,1.019807,1.022969,1.031664,1.047861,1.072905,1.085351,1.089475,1.092635,1.099518,1.106335,1.10888,1.11509,1.12624,1.135926,1.147058,1.164035,1.180098,1.183757,1.197725,1.2109,1.213564,1.217933,1.218664,1.21976,1.226591,1.236772,1.255818,1.280306,1.31001,1.34145,1.393364,1.465679,1.520642,1.556073,1.591552,1.615903,1.630769,1.626529,1.610264,1.603501,1.609594,1.628587,1.634776,1.642786,1.652807,1.667352,1.678856,1.697828,1.718371,1.740882,1.764906,1.788026,1.80984,1.822328,1.829435,1.844437,1.858085,1.865332,1.870928,1.886831,1.903058,1.898871,1.890516,1.884088,1.871842,1.861921,1.873092,1.880585,1.880397,1.897696,1.897886,1.893521,1.885568,1.892733,1.906929,1.910361,1.91743,1.92299,1.932028,1.946518,1.952747,1.962511,1.96781,1.9745,1.97529,1.97608,1.981218,1.986765,2.006236,2.032116,2.053453,2.067622,2.104012,2.126946,2.138219,2.154042,2.168905,2.203824,2.24746,2.287015,2.279697,2.282204,2.30457,2.313327,2.31032,2.300154,2.306135,2.289069,2.285636,2.284036,2.281752,2.27194,2.263761,2.273269,2.274406,2.27668,2.270761,2.285067,2.31203,2.333764,2.351733,2.379719,2.399947,2.403547,2.422054,2.449908,2.474652,2.510534,2.527857,2.547827,2.573305,2.58926,2.600911,2.612095,2.607393,2.604265,2.615723,2.632726,2.646679,2.659912,2.65672,2.663362,2.661764,2.67321,2.695932,2.723431,2.741405,2.77814,2.817868,2.845201,2.84577,2.844916,2.864262,2.874,2.882335,2.888388,2.89272,2.89272,2.914416,2.921993,2.926376,2.970272,2.995816,3.004504,3.022531,3.037039,3.04858,3.099491,3.123667,3.119606,3.096521,3.077632,3.069323,3.075461,3.084073,3.114297,3.133605,3.157421,3.165946,3.196972,3.234377,3.247638,3.269397,3.291956,3.301173,3.332534,3.395519,3.447131,3.464022,3.503512,3.548707,3.566805,3.578576,3.60792,3.668894,3.675498,3.681011,3.688373,3.694275,3.693166,3.71311,3.736873,3.739863,3.740237,3.699094,3.664693,3.640139,3.61393,3.617544,3.634547,3.641816,3.660753,3.693334,3.721403,3.724008,3.747842,3.769205,3.82122,3.892676,3.912529,3.939917,3.999804,4.035402,4.015628,3.97226,3.972657,4.007616,4.058112,4.095447,4.113876,4.146787,4.163374,4.13548,4.135066,4.163185,4.175674,4.262946,4.283408,4.281695,4.334788,4.369466,4.3817,4.450055,4.549291,4.673942,4.876791,5.034311,5.199437,5.249351,5.384784,5.52102,5.683338,5.769156,6.005691,6.041725,6.088851,6.129037,6.089811,6.128786,6.130012,6.183343,6.29588,6.411095,6.522648,6.614617,6.649013,6.688242,6.702287,6.655371,6.592145,6.528202,6.491644,6.520856,6.53455,6.530629,6.533894,6.471822,6.352741,6.230133,6.185276,6.176617,6.19947,6.230468,6.267227,6.313605,6.318024,6.285171,6.25563,6.275023,6.33087,6.38215,6.421082,6.439703,6.479629,6.578119,6.663635,6.726273,6.744434,6.815925,6.792751,6.809053,6.775689,6.662535,6.611233,6.635034,6.662901,6.638915,6.65684,6.656174,6.683464,6.634675,6.669175,6.851244,6.908794,6.87425,6.794509,6.779561,6.886],"ipca":[1.0062,1.007508,1.009725,1.013965,1.014067,1.016399,1.032763,1.046292,1.048699,1.050167,1.053528,1.059743,1.065784,1.070687,1.074755,1.080989,1.085421,1.091065,1.105576,1.113315,1.116432,1.125699,1.133691,1.14106,1.146994,1.151123,1.15803,1.167294,1.169745,1.174658,1.188637,1.196363,1.204977,1.220762,1.257629,1.284039,1.31293,1.333543,1.349945,1.36304,1.371354,1.369297,1.372036,1.376701,1.387439,1.391463,1.396194,1.403454,1.41412,1.422746,1.429433,1.434722,1.442039,1.452278,1.465493,1.475605,1.480475,1.486989,1.497249,1.510126,1.518884,1.527846,1.537166,1.550539,1.558136,1.557825,1.561719,1.564374,1.56985,1.581624,1.590322,1.596048,1.605464,1.612047,1.618979,1.622378,1.624001,1.62059,1.623669,1.624481,1.627893,1.633265,1.638328,1.646192,1.653435,1.66071,1.666855,1.671022,1.675701,1.680393,1.684426,1.692343,1.695389,1.700475,1.706937,1.719568,1.728854,1.737325,1.745664,1.755265,1.769132,1.782224,1.791669,1.796686,1.801357,1.809464,1.815978,1.821062,1.829803,1.839867,1.843547,1.852396,1.861102,1.867802,1.872285,1.875094,1.879594,1.884857,1.892585,1.899587,1.913834,1.928762,1.938791,1.949843,1.958227,1.958227,1.958423,1.959206,1.968023,1.982783,1.99924,2.011835,2.028533,2.044761,2.060915,2.076784,2.086545,2.089675,2.093018,2.100762,2.111897,2.120978,2.132007,2.142667,2.154666,2.164362,2.168907,2.182788,2.190646,2.192398,2.201826,2.210853,2.223455,2.236573,2.249993,2.267768,2.287271,2.300994,2.311809,2.324524,2.333125,2.339191,2.339893,2.345508,2.353718,2.367134,2.379916,2.401812,2.415021,2.431685,2.454057,2.470499,2.481863,2.491791,2.49204,2.49827,2.51251,2.523063,2.53593,2.55571,2.587401,2.618967,2.653538,2.672378,2.692154,2.713422,2.730245,2.736251,2.751027,2.773586,2.801599,2.828494,2.864416,2.890196,2.902624,2.92033,2.943108,2.953409,2.968767,2.981829,2.984215,2.991974,2.997359,3.006351,3.017775,3.027734,3.035303,3.039553,3.048976,3.041963,3.049264,3.055057,3.059945,3.072797,3.081401,3.094959,3.103934,3.113867,3.116669,3.123526,3.13602,3.175534,3.186013,3.183146,3.198425,3.212818,3.206071,3.21088,3.221155,3.235006,3.259269,3.277846,3.282108,3.282436,3.288672,3.29229,3.290973,3.294264,3.311065,3.349142,3.356175,3.364566,3.366921,3.356483,3.343729,3.352422,3.364491,3.372566,3.39415,3.42334,3.453808,3.500434,3.509185,3.539364,3.57228,3.583354,3.613096,3.632246,3.667115,3.699019,3.741928,3.788702,3.824694,3.852615,3.873419,3.91254,3.975924,4.018068,4.036953,4.064001,4.036366,4.021835,4.010171,4.033831,4.05037,4.075482,4.097082,4.131498,4.160832,4.186213,4.195841,4.192484,4.197515,4.20717,4.218108,4.228232,4.240071,4.263815,4.281723,4.317261,4.324169,4.340601,4.360568,4.369725,4.38633,4.385453,4.404749,4.429415,4.44669,4.469813,4.476964,4.535613,4.561012,4.580624,4.592534,4.603556,4.615525,4.610448,4.632578,4.636748,4.645094,4.660423,4.675802,4.708533,4.749968,4.781793,4.809527,4.817222,4.820594,4.805168,4.844571],"incc":[1.0107,1.018482,1.024186,1.030331,1.04424,1.051863,1.055019,1.059134,1.061887,1.065392,1.06976,1.076606,1.08285,1.086532,1.089466,1.093388,1.116458,1.129409,1.135282,1.142321,1.148604,1.159286,1.167864,1.171835,1.176054,1.182875,1.189381,1.193306,1.223496,1.23047,1.234039,1.246379,1.255228,1.269412,1.300513,1.322622,1.342593,1.361255,1.380041,1.392461,1.432007,1.447043,1.461369,1.482412,1.485674,1.495331,1.510882,1.513299,1.518293,1.533476,1.551265,1.560417,1.588973,1.600095,1.618017,1.631122,1.640583,1.660106,1.671893,1.680419,1.693022,1.700472,1.711865,1.72419,1.760226,1.773604,1.775555,1.77591,1.780172,1.783554,1.788548,1.795166,1.801269,1.804692,1.808301,1.814811,1.838767,1.855315,1.864035,1.868509,1.870564,1.874493,1.878804,1.885568,1.894053,1.89803,1.903155,1.911909,1.933896,1.951688,1.957738,1.962829,1.972839,1.982901,1.990039,2.00178,2.009387,2.017425,2.03074,2.048407,2.089785,2.129909,2.161005,2.186505,2.207277,2.224273,2.235394,2.239195,2.246584,2.25265,2.247018,2.246119,2.27734,2.293282,2.299244,2.298095,2.301542,2.302923,2.309601,2.311911,2.326707,2.335083,2.352596,2.372358,2.415298,2.441624,2.452368,2.455801,2.460958,2.46588,2.475004,2.491586,2.501802,2.508807,2.519595,2.546302,2.621164,2.630862,2.642701,2.646136,2.649841,2.655936,2.675058,2.678001,2.701835,2.709941,2.723761,2.74419,2.79578,2.816189,2.835058,2.842429,2.848682,2.854665,2.864085,2.868668,2.887314,2.904638,2.919161,2.940763,3.00693,3.04151,3.056109,3.065583,3.078765,3.08677,3.097573,3.100671,3.127957,3.138279,3.147066,3.17476,3.239843,3.261226,3.285685,3.288314,3.293246,3.298845,3.31336,3.31601,3.346518,3.356892,3.377705,3.393242,3.425478,3.488507,3.507693,3.528389,3.536151,3.548881,3.560948,3.564509,3.57841,3.597734,3.620759,3.640673,3.643586,3.713907,3.732105,3.742928,3.75528,3.763166,3.769187,3.782002,3.797508,3.822192,3.828308,3.827542,3.851656,3.887476,3.899138,3.913175,3.915523,3.927661,3.939837,3.942595,3.954817,3.959958,3.969462,3.980974,3.99013,4.028834,4.05341,4.05949,4.068827,4.083068,4.088376,4.093691,4.11375,4.117452,4.130216,4.145911,4.147155,4.18365,4.207915,4.225588,4.245026,4.252667,4.254368,4.263302,4.279503,4.293625,4.304789,4.314259,4.322888,4.337585,4.388335,4.419931,4.471202,4.548554,4.606776,4.639023,4.68031,4.768768,4.830762,4.874239,4.982447,5.090068,5.133334,5.156947,5.183248,5.227823,5.26285,5.28127,5.318767,5.338978,5.384893,5.43605,5.559992,5.678976,5.727815,5.73297,5.73813,5.745015,5.765697,5.770886,5.797433,5.800331,5.817732,5.825877,5.86025,5.901858,5.907759,5.917803,5.937923,5.949799,5.953964,5.972421,5.988547,5.996332,6.013121,6.04439,6.096371,6.139656,6.183861,6.227148,6.263266,6.305856,6.331079,6.362735,6.415545,6.441208,6.466328,6.499953,6.537653,6.582763,6.642666,6.677208,6.688559,6.708625,6.726738,6.740864,6.789398,6.808409,6.845174,6.913626,6.974466,7.028867,7.071743,7.118416,7.134077]};
 const UC_FONTE=['rs_cempre','rs_rais','rs_pnad','rs_mix_rais','rs_mix_cempre'].find(k=>DADOS[k])||'rs_cempre';
 function ucBase(){ return DADOS[UC_FONTE]; }
 const MES_NOME=['jan','fev','mar','abr','mai','jun','jul','ago','set','out','nov','dez'];
+let UC_SETBASE=null;
+function ucBaseKey(){ const b=($("uc_base")?$("uc_base").value:'rs'); return (DADOS[b+'_cempre']?b+'_cempre':(DADOS[b+'_rais']?b+'_rais':UC_FONTE)); }
 function fillUCsetores(){
-  const s=$("uc_setor"); if(s.options.length) return;
-  const b=ucBase(); b.setores.forEach((st,i)=>{const o=document.createElement('option');o.value=i;o.textContent=st.cod+' — '+st.nome;s.appendChild(o);});
+  const base=$("uc_base")?$("uc_base").value:'rs';
+  if(UC_SETBASE===base) return;
+  UC_SETBASE=base;
+  const b=DADOS[ucBaseKey()]||ucBase();
+  const s=$("uc_setor"); const prev=s.value; s.innerHTML='';
+  b.setores.forEach((st,i)=>{const o=document.createElement('option');o.value=i;o.textContent=st.cod+' — '+st.nome;s.appendChild(o);});
+  if(prev!=='' && Number(prev)<b.setores.length) s.value=prev;
 }
 function fillUCdates(){
   if($("uc_a0").options.length) return;
@@ -1510,10 +1665,11 @@ function idxAt(arr,am){
   return arr[arr.length-1];
 }
 function fmtMi(x){ return Math.abs(x)>=1 ? 'R$ '+fmtN(x,2)+' mi' : 'R$ '+fmtN(x*1e6,0); }
-function computeUCcarbon(Xmi,j){
+function computeUCcarbon(Xmi,j,base){
+  if(base && base!=='rs') return null;   // camada de carbono (SEEG) só existe na MIP RS
   const Lm=DADOS._meta&&DADOS._meta.Lrs, ei=DADOS._meta&&DADOS._meta.intrs;
   if(!Lm||!ei) return null;
-  const n=ei.length; let tCO2=0;
+  const n=ei.length; if(j>=n) return null; let tCO2=0;
   for(let i=0;i<n;i++){ tCO2 += ei[i]*Lm[i][j]*Xmi; }
   return tCO2;
 }
@@ -1555,44 +1711,54 @@ function faseCalc(f){
 function computeFases(){
   if(!UC_FASES) return; readFases();
   const idxNome={incc:'INCC-M',igpm:'IGP-M',ipca:'IPCA'}[$("uc_idx").value];
-  let tDecl=0,tApur=0,tContrib=0,tCInfl=0,tCBand=0,tDif=0;
+  let tDecl=0,tApur=0,tBase=0,tCInfl=0,tCBand=0;
   UC_FASES.forEach((f,i)=>{
     const r=faseCalc(f);
-    tDecl+=f.decl;tApur+=f.apur;tContrib+=r.contrib;tCInfl+=r.compInfl;tCBand+=r.compBand;tDif+=r.difBruta;
+    const baseF=0.005*f.decl, finalBandaF=baseF+r.compBand, finalInflF=baseF+r.compInfl;
+    tDecl+=f.decl;tApur+=f.apur;tBase+=baseF;tCInfl+=r.compInfl;tCBand+=r.compBand;
     const o=$("fase_out_"+i); if(!o) return;
     o.innerHTML=
       '<div class="fase-row"><span>Período</span><b>'+MES_NOME[(r.am0%100)-1]+'/'+Math.floor(r.am0/100)+' → '+MES_NOME[(r.am1%100)-1]+'/'+Math.floor(r.am1/100)+' ('+r.meses+' m)</b></div>'
-     +'<div class="fase-row"><span>Contribuição 0,5% (sobre apurado)</span><b class="g">'+fmtMi(r.contrib)+'</b></div>'
+     +'<div class="fase-row"><span>Compensação-base — 0,5% do declarado</span><b class="g">'+fmtMi(baseF)+'</b></div>'
      +'<div class="fase-row"><span>Inflação '+idxNome+' · corrigido · banda</span><b>'+fmtN(r.acc*100,1)+'% · '+fmtMi(r.corr)+' · '+fmtMi(r.band)+'</b></div>'
      +'<div class="fase-row"><span>Excedente índice puro → 0,5%</span><b>'+fmtMi(r.excInfl)+' → '+fmtMi(r.compInfl)+'</b></div>'
-     +'<div class="fase-row"><span>Excedente banda +25% → 0,5%</span><b class="gold">'+fmtMi(r.excBand)+' → '+fmtMi(r.compBand)+'</b></div>';
+     +'<div class="fase-row"><span>Excedente banda +25% → 0,5%</span><b class="gold">'+fmtMi(r.excBand)+' → '+fmtMi(r.compBand)+'</b></div>'
+     +'<div class="fase-final"><span>Valor final da fase</span><b>'+fmtMi(finalBandaF)+(finalInflF>finalBandaF?'  (até '+fmtMi(finalInflF)+')':'')+'</b></div>';
   });
+  const tFinalBanda=tBase+tCBand, tFinalInfl=tBase+tCInfl;
   const T=$("uc_fases_tot");
   if(T) T.innerHTML = UC_FASES.length ? (
      '<div class="fase-tot"><div class="fase-tot-h">Soma das '+UC_FASES.length+' fase'+(UC_FASES.length>1?'s':'')+'</div>'
     +'<div class="fase-trow"><span>Declarado · Apurado (fases)</span><b>'+fmtMi(tDecl)+' · '+fmtMi(tApur)+'</b></div>'
-    +'<div class="fase-trow"><span>Contribuição total — 0,5% sobre apurado</span><b class="g">'+fmtMi(tContrib)+'</b></div>'
-    +'<div class="fase-trow"><span>Compensação adicional — índice puro</span><b>'+fmtMi(tCInfl)+'</b></div>'
-    +'<div class="fase-trow"><span>Compensação adicional — banda +25%</span><b class="gold">'+fmtMi(tCBand)+'</b></div>'
-    +'<div class="fase-trow"><span>Diferença bruta total (0,5% · apurado − declarado)</span><b>'+fmtMi(tDif)+'</b></div></div>') : '';
+    +'<div class="fase-trow"><span>Compensação-base (0,5% do declarado)</span><b class="g">'+fmtMi(tBase)+'</b></div>'
+    +'<div class="fase-trow"><span>Adicional real — índice puro</span><b>'+fmtMi(tCInfl)+'</b></div>'
+    +'<div class="fase-trow"><span>Adicional real — banda +25%</span><b class="gold">'+fmtMi(tCBand)+'</b></div>'
+    +'<div class="fase-trow final"><span>Valor final total</span><b>'+fmtMi(tFinalBanda)+(tFinalInfl>tFinalBanda?'  ·  índice puro: '+fmtMi(tFinalInfl):'')+'</b></div></div>') : '';
 }
 function ucFasesSync(){ if(UC_FASES===null){ UC_FASES=[novaFase()]; buildFases(); } else computeFases(); }
 function renderUC(){
   fillUCsetores(); fillUCdates();
   const X=Math.max(0,parseFloat($("uc_val").value)||0);
   const j=parseInt($("uc_setor").value)||0;
+  const base=$("uc_base")?$("uc_base").value:'rs';
   const comp=0.005*X;
   $("uc_comp").textContent=fmtMi(comp);
   $("uc_comp_base").textContent=fmtMi(X);
-  const tCO2=computeUCcarbon(X,j), preco=precoCarbono();
+  const tCO2=computeUCcarbon(X,j,base), preco=precoCarbono();
   if(tCO2!=null){
     const custoMi=tCO2*preco/1e6;
     $("uc_co2").textContent=fmtN(tCO2,0)+' tCO₂e';
     $("uc_ccost").textContent=fmtMi(custoMi);
     $("uc_cpct").textContent = X>0 ? fmtN(100*custoMi/X,1)+'% do investimento' : '—';
     $("uc_cpreco").textContent='R$ '+fmtN(preco,0)+'/t';
+    const dif=custoMi-comp, ratio=comp>0?custoMi/comp:0;
+    $("uc_cdif").textContent=fmtMi(dif);
+    $("uc_cdifex").innerHTML = (comp>0 && custoMi>0)
+      ? 'o custo do carbono é <b>'+fmtN(ratio,0)+'×</b> a compensação de 0,5% ('+fmtMi(custoMi)+' vs '+fmtMi(comp)+')'
+      : 'quanto a externalidade de carbono supera a compensação legal';
   } else {
     $("uc_co2").textContent='—'; $("uc_ccost").textContent='—'; $("uc_cpct").textContent='—'; $("uc_cpreco").textContent='—';
+    $("uc_cdif").textContent='—'; $("uc_cdifex").textContent='pegada de carbono disponível só na MIP RS — a compensação de 0,5% ('+fmtMi(comp)+') continua valendo';
   }
   const decl=Math.max(0,parseFloat($("uc_decl").value)||0);
   const apur=Math.max(0,parseFloat($("uc_apur").value)||0);
@@ -1619,6 +1785,20 @@ function renderUC(){
   $("uc_comp_infl").textContent=fmtMi(compInfl);
   $("uc_exc").textContent=fmtMi(exc);
   $("uc_compexc").textContent=fmtMi(compExc);
+  // valor final total = compensação-base (0,5% do declarado) + adicional real
+  const baseComp=0.005*decl, totalBanda=baseComp+compExc, totalInfl=baseComp+compInfl;
+  $("uc_total_num").textContent=fmtMi(totalBanda);
+  const tbox=$("uc_total_box");
+  if(excInfl<=0){
+    tbox.className='uc-total';
+    $("uc_total_ex").innerHTML='Só a <b>compensação-base</b>: 0,5% × '+fmtMi(decl)+' (declarado) = <b>'+fmtMi(baseComp)+'</b>. O aumento apurado é explicado pela inflação — <b>nada a somar</b>.';
+  } else if(exc<=0){
+    tbox.className='uc-total';
+    $("uc_total_ex").innerHTML='<b>'+fmtMi(totalBanda)+'</b> = só a compensação-base ('+fmtMi(baseComp)+'). O apurado supera o índice puro, mas fica <b>dentro da banda +25%</b> — pela banda, nada a somar. Pelo critério estrito (índice puro) seria <b>'+fmtMi(totalInfl)+'</b>.';
+  } else {
+    tbox.className='uc-total alert';
+    $("uc_total_ex").innerHTML='<b>'+fmtMi(totalBanda)+'</b> = compensação-base '+fmtMi(baseComp)+' (0,5% do declarado) + adicional '+fmtMi(compExc)+' (excedente real acima da banda). Pelo critério estrito (índice puro): <b>'+fmtMi(totalInfl)+'</b>.';
+  }
   const segInfl=Math.max(0,corr-decl), segBand=Math.max(0,band-corr);
   const tot=Math.max(apur,band,decl)||1, pc=x=>(100*x/tot).toFixed(2)+'%';
   $("uc_bar").innerHTML='<i class="b-base" style="width:'+pc(decl)+'"></i><i class="b-infl" style="width:'+pc(segInfl)+'"></i><i class="b-band" style="width:'+pc(segBand)+'"></i><i class="b-exc" style="width:'+pc(exc)+'"></i>';
@@ -1639,6 +1819,7 @@ function renderUC(){
   ucFasesSync();
 }
 $("uc_val").addEventListener('input',renderUC);
+$("uc_base").addEventListener('change',renderUC);
 $("uc_setor").addEventListener('change',renderUC);
 ['uc_decl','uc_apur','uc_idx','uc_m0','uc_a0','uc_m1','uc_a1'].forEach(id=>$(id).addEventListener('input',renderUC));
 $("uc_addfase").addEventListener('click',function(){ if(!UC_FASES)UC_FASES=[]; UC_FASES.push(novaFase()); buildFases(); });
