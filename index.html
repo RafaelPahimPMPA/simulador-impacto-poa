@@ -2,11 +2,17 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Simulador de Impacto - Porto Alegre</title>
 <style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600;8..60,700&family=Space+Grotesk:wght@500;600;700&display=swap');
  :root{
-   --bg:#F4F6F7; --panel:#FFFFFF; --ink:#16232B; --slate:#53636D; --faint:#85939C;
-   --line:#E4E8EB; --line2:#CCD4D9;
-   --navy:#0E3A53; --steel:#246F8B; --ochre:#B4863A; --teal:#2E8770; --brick:#9B4A3A;
-   --steelsoft:#E7F0F4;
+   --bg:#04090f; --bg2:#0a1420; --panel:#0b1826; --ink:#dde8f8; --slate:rgba(221,232,248,.72); --faint:rgba(221,232,248,.46);
+   --line:rgba(120,160,220,.16); --line2:rgba(120,160,220,.30);
+   --navy:#e9f1fc; --steel:#38bdf8; --ochre:#fbbf24; --teal:#34d399; --brick:#f472b6;
+   --steelsoft:rgba(56,189,248,.18);
+   --vidro:rgba(10,20,34,.72); --vidro2:rgba(14,26,44,.70); --accent:#38bdf8; --roxo:#c084fc; --ouro:#d4ba7c; --ambar:#fbbf24;
+   --sombra:0 14px 44px rgba(0,0,0,.42);
+   --f-txt:"Inter",system-ui,-apple-system,"Segoe UI",sans-serif;
+   --f-disp:"Source Serif 4",Georgia,"Times New Roman",serif;
+   --f-tit:"Space Grotesk","Inter",system-ui,sans-serif;
  }
  *{box-sizing:border-box}
  html,body{margin:0}
@@ -148,6 +154,260 @@
  .topnav .tabs{margin:0;border-bottom:none;flex-wrap:wrap}
  .topnav .tab{margin-right:20px;padding:12px 1px}
  @media(max-width:620px){.brand .b-title{font-size:14px} .topnav .tab{margin-right:14px;font-size:13px}}
+/* ---- janela PSA ---- */
+.winbar{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin:0 0 18px}
+.winbar .wl{font-size:11px;letter-spacing:1px;text-transform:uppercase;color:#6b7a84;font-weight:600}
+.wbtn{appearance:none;border:1px solid #d9d4ca;background:#fff;border-radius:10px;padding:8px 15px;cursor:pointer;font:inherit;text-align:left;color:#20303a;line-height:1.15}
+.wbtn span{display:block;font-size:10.5px;color:#7d8a92;margin-top:2px;font-weight:400}
+.wbtn.on{border-color:#1b6245;background:#eef4ef}.wbtn.on span{color:#3f6b52}
+.ptabs{display:flex;gap:20px;border-bottom:1px solid #e3ddd1;margin:0 0 18px;flex-wrap:wrap}
+.ptab{appearance:none;background:none;border:none;border-bottom:2px solid transparent;padding:8px 2px;margin-bottom:-1px;cursor:pointer;font:inherit;font-size:14px;color:#5d6f79}
+.ptab.on{color:#1b6245;border-bottom-color:#1b6245;font-weight:600}
+.ppane{display:none}.ppane.on{display:block}
+.psa-fxbox{background:#0f2a1d;color:#eaf2ec;border-radius:12px;padding:16px 20px;margin-top:10px}
+.psa-fxbox .fx-lab{font-size:10.5px;letter-spacing:1.5px;text-transform:uppercase;color:#8fb39f}
+.psa-fxbox .fx-main{font-family:Georgia,serif;font-size:25px;margin:7px 0 9px;line-height:1.2}
+.psa-fxbox .fx-x{color:#f0d79a}.psa-fxbox .fx-n{color:#9fd6b3}.psa-fxbox .fx-z{color:#bcd0e8}
+.psa-fxbox .fx-leg{font-size:12px;color:#c5d6cc;line-height:1.55}
+.psa-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;align-items:start;margin-top:16px}
+@media(max-width:820px){.psa-grid{grid-template-columns:1fr}}
+.psa-input{font-size:16px;padding:9px 11px;border:1px solid #d9d4ca;border-radius:8px;width:150px}
+.psa-ha-lab{display:block;font-size:13px;color:#20303a;margin-bottom:6px;font-weight:600}
+.psa-ha-hint{font-size:11.5px;color:#7d8a92;margin-top:6px}
+.tgrp-h{display:flex;justify-content:space-between;align-items:center;font-weight:700;color:#1b6245;font-size:13.5px;margin:26px 0 12px;padding:15px 18px;background:#eef4ef;border:1px solid #cfe0d2;border-radius:9px}
+.tgrp-h .mx{font-weight:600;color:#8a7a55;font-size:11px}
+.opt{display:grid;grid-template-columns:20px 1fr auto;gap:11px;align-items:start;padding:10px 2px;border-top:1px solid #f0ede6;cursor:pointer;text-align:left}
+.opt input{margin:2px 0 0;width:16px;height:16px;cursor:pointer}
+.opt .ot{display:block;font-size:13.5px;color:#20303a;line-height:1.3}
+.opt .od{display:block;font-size:11.5px;color:#7d8a92;margin-top:3px;line-height:1.45}
+.opt .op{font-weight:700;color:#8a7a55;font-size:12.5px;white-space:nowrap;padding-top:1px}
+.opt2{display:grid;grid-template-columns:20px 1fr auto;gap:12px;align-items:center;padding:9px 4px;cursor:pointer;border-radius:6px}
+.opt2:hover{background:#f6f8f6}
+.opt2 input{width:16px;height:16px;cursor:pointer;margin:0}
+.opt2 .ot{font-size:14px;color:#20303a} .opt2 .op{font-weight:700;color:#8a7a55;font-size:12.5px}
+.opt2sel{display:grid;grid-template-columns:1fr auto;gap:12px;align-items:center;padding:10px 4px}
+.opt2sel .ot{font-size:14px;color:#20303a}
+#win_psa .card{padding:0 28px 26px}
+#win_psa .hd{padding:18px 0 14px}
+@media(max-width:620px){#win_psa .card{padding:0 16px 18px}}
+.psa-big{margin:14px 0 10px;padding:15px 17px;background:#eef4ef;border:1px solid #cfe0d2;border-radius:10px}
+.psa-big .lb{font-size:11px;letter-spacing:.5px;text-transform:uppercase;color:#5d6f79;font-weight:600}
+.psa-big .bnum{font-family:Georgia,serif;font-size:34px;color:#1b6245;line-height:1.1;margin-top:3px}
+.psa-big .ex{font-size:12px;margin-top:5px}
+.psa-mini{font-size:12px;color:#7d8a92;line-height:1.7} .psa-mini b{color:#20303a}
+.optsel{padding:11px 2px;border-top:1px solid #f0ede6}
+.optsel .ot{font-size:13.5px;color:#20303a} .optsel .od{display:block;font-size:11.5px;color:#7d8a92;margin:3px 0 7px;line-height:1.45}
+.tsel{font:inherit;font-size:12.5px;padding:6px 8px;border:1px solid #d9d4ca;border-radius:6px;width:100%;max-width:340px}
+.tsub{font-size:10.5px;color:#8a7a55;margin:18px 0 4px;padding-left:31px;font-weight:700;text-transform:uppercase;letter-spacing:.6px}
+.psa-res{position:sticky;top:12px}
+.nmeter{height:8px;background:#e8ece7;border-radius:5px;overflow:hidden;margin:7px 0 3px}
+.nmeter > i{display:block;height:100%;background:#1b6245;border-radius:5px;transition:width .2s}
+.psa-sub{background:#eef4ef;border:1px solid #cfe0d2;border-radius:10px;padding:13px 16px;font-size:13.5px;color:#3a4c57;line-height:1.55;margin:8px 0 0}
+.psa-sub b{color:#1b6245}
+.gloss{font-size:13px;line-height:1.65;color:#3a4c57;margin:0} .gloss b{color:#20303a} .gloss li{margin-bottom:6px}
+.psa-step{font-family:Georgia,serif;font-size:15px;color:#20303a;background:#eef4ef;border:1px solid #cfe0d2;border-radius:8px;padding:11px 14px;margin-bottom:14px;line-height:1.5}
+.psa-fx-live{background:#eef4ef;border:1px solid #cfe0d2;border-radius:8px;padding:11px 15px;font-family:Georgia,serif;font-size:16px;color:#20303a;margin-bottom:14px}
+.psa-pago .vl{color:#1b6245}
+.psa-tab{width:100%;border-collapse:collapse;font-size:13px}
+.psa-tab th{background:#f0ede6;text-align:left;padding:8px 10px;border-bottom:2px solid #e3ddd1}
+.psa-tab td{padding:6px 10px;border-bottom:1px solid #f0ede6;vertical-align:top}
+.psa-tab td,.psa-tab th{text-align:left}
+.psa-tab .pz{text-align:right;white-space:nowrap;font-weight:600;color:#1b6245;width:54px}
+.psa-tab tfoot td{font-weight:700;color:#1b6245;border-top:2px solid #e3ddd1;background:#eef4ef}
+.psa-sobre p{font-size:13.5px;line-height:1.6;color:#3a4c57}.psa-sobre b{color:#20303a}
+.psa-ex{background:#faf9f6;border-left:3px solid #1b6245;border-radius:6px;padding:9px 13px;margin:9px 0;font-size:13px}
+/* ---- janela Impacto Unidade de Conservação ---- */
+#win_uc{max-width:1120px;margin:0 auto;padding:0 24px 80px}
+#win_uc .card{padding:0 28px 26px}
+#win_uc .hd{padding:18px 0 14px}
+@media(max-width:620px){#win_uc .card{padding:0 16px 18px}}
+.utabs{display:flex;gap:20px;border-bottom:1px solid #e3ddd1;margin:0 0 18px;flex-wrap:wrap}
+.utab{appearance:none;background:none;border:none;border-bottom:2px solid transparent;padding:8px 2px;margin-bottom:-1px;cursor:pointer;font:inherit;font-size:14px;color:#5d6f79}
+.utab.on{color:#1b6245;border-bottom-color:#1b6245;font-weight:600}
+.upane{display:none}.upane.on{display:block}
+.uc-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;align-items:start;margin-top:16px}
+@media(max-width:820px){.uc-grid{grid-template-columns:1fr}}
+.uc-field{margin-bottom:14px}
+.uc-field label{display:block;font-size:13px;color:#20303a;margin-bottom:6px;font-weight:600}
+.uc-field .hint{font-size:11.5px;color:#7d8a92;margin-top:5px;line-height:1.5}
+.uc-input{font-size:16px;padding:9px 11px;border:1px solid #d9d4ca;border-radius:8px;width:170px;max-width:100%}
+.uc-sel{font-size:14px;padding:9px 11px;border:1px solid #d9d4ca;border-radius:8px;width:100%;background:#fff}
+.uc-dt{display:flex;gap:8px;flex-wrap:wrap}
+.uc-dt select{font-size:14px;padding:8px 9px;border:1px solid #d9d4ca;border-radius:8px;background:#fff}
+.uc-res{position:sticky;top:12px}
+.uc-big{margin:0 0 12px;padding:15px 17px;background:#eef4ef;border:1px solid #cfe0d2;border-radius:10px}
+.uc-big .lb{font-size:11px;letter-spacing:.5px;text-transform:uppercase;color:#5d6f79;font-weight:600}
+.uc-big .bnum{font-family:Georgia,serif;font-size:32px;color:#1b6245;line-height:1.1;margin-top:3px}
+.uc-big .ex{font-size:12px;margin-top:5px;color:#5d6f79}
+.uc-big.gold{background:#fbf6ea;border-color:#e6d7ab}.uc-big.gold .bnum{color:#8a6d1f}
+.uc-row{display:grid;grid-template-columns:1fr auto;gap:10px;align-items:baseline;padding:9px 2px;border-bottom:1px solid #f0ede6;font-size:13.5px;color:#3a4c57}
+.uc-row .v{font-weight:700;color:#20303a;white-space:nowrap}
+.uc-row .v.g{color:#1b6245}.uc-row .v.r{color:#b4452f}
+.uc-note{font-size:12px;color:#7d8a92;line-height:1.7;margin-top:10px}.uc-note b{color:#20303a}
+.uc-fxbox{background:#0f2a1d;color:#eaf2ec;border-radius:12px;padding:16px 20px;margin-top:10px}
+.uc-fxbox .fx-lab{font-size:10.5px;letter-spacing:1.5px;text-transform:uppercase;color:#8fb39f}
+.uc-fxbox .fx-main{font-family:Georgia,serif;font-size:22px;margin:7px 0 9px;line-height:1.25}
+.uc-fxbox .fx-x{color:#f0d79a}.uc-fxbox .fx-n{color:#9fd6b3}.uc-fxbox .fx-leg{font-size:12px;color:#c5d6cc;line-height:1.55}
+.uc-verdict{border-radius:10px;padding:14px 17px;margin-top:4px;font-size:13.5px;line-height:1.6;border:1px solid}
+.uc-verdict.ok{background:#eef4ef;border-color:#cfe0d2;color:#2b4738}
+.uc-verdict.warn{background:#fbf6ea;border-color:#e6d7ab;color:#5c4a19}
+.uc-verdict.alert{background:#fbeeea;border-color:#e6c3b7;color:#7a3322}
+.uc-verdict b{font-weight:700}
+.uc-bar{display:flex;height:26px;border-radius:7px;overflow:hidden;margin:12px 0 6px;border:1px solid #e3ddd1;background:#f0ede6}
+.uc-bar i{display:block;height:100%}
+.uc-bar .b-base{background:#9fc3ad}.uc-bar .b-infl{background:#e6cf8f}.uc-bar .b-band{background:#d7e0ea}.uc-bar .b-exc{background:#c98b74}
+.uc-legend{display:flex;gap:16px;flex-wrap:wrap;font-size:11.5px;color:#5d6f79;margin-bottom:6px}
+.uc-legend span{display:inline-flex;align-items:center;gap:5px}
+.uc-legend i{width:11px;height:11px;border-radius:3px;display:inline-block}
+.uc-sub{background:#eef4ef;border:1px solid #cfe0d2;border-radius:10px;padding:13px 16px;font-size:13.5px;color:#3a4c57;line-height:1.55;margin:8px 0 0}
+.uc-sub b{color:#1b6245}
+.uc-exc2{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:14px 0 4px}
+@media(max-width:480px){.uc-exc2{grid-template-columns:1fr}}
+.uc-exc-col{padding:12px 13px;border-radius:9px;background:#f4f6f4;border:1px solid #dfe6df}
+.uc-exc-col.gold{background:#fbf6ea;border-color:#e6d7ab}
+.uc-exc-col .lb{font-size:10.5px;letter-spacing:.4px;text-transform:uppercase;color:#5d6f79;font-weight:600;line-height:1.45}
+.uc-exc-col .lb .sm{display:block;font-size:10px;letter-spacing:0;text-transform:none;color:#8a97a0;font-weight:400;margin-top:2px}
+.uc-exc-col .n{font-family:Georgia,serif;font-size:23px;color:#20303a;line-height:1.1;margin:7px 0 5px}
+.uc-exc-col.gold .n{color:#8a6d1f}
+.uc-exc-col .s{font-size:11.5px;color:#5d6f79}.uc-exc-col .s b{color:#20303a}
+.uc-exc-col.gold .s b{color:#8a6d1f}
+
+/* ============================================================
+   RESKIN — tema escuro "vidro" (apenas estético: cores/formas/fontes)
+   ============================================================ */
+body{font-family:var(--f-txt);background:
+  radial-gradient(1200px 680px at 78% -8%,rgba(56,189,248,.10),transparent 60%),
+  radial-gradient(1000px 620px at 8% 108%,rgba(192,132,252,.10),transparent 60%),
+  var(--bg)}
+.serif,.psa-fxbox .fx-main,.uc-fxbox .fx-main,.psa-step,.psa-fx-live,.psa-big .bnum,.uc-big .bnum,.uc-exc-col .n{font-family:var(--f-disp)}
+.eyebrow,.scn .lab,.kpi .lb,.ministat .lb,.split-top,thead th,.sortbar .lb,.mbtn,.tab,.ptab,.utab,.wbtn,.tgrp-h,.uc-big .lb,.psa-big .lb,.uc-exc-col .lb,.psa-fxbox .fx-lab,.uc-fxbox .fx-lab,.btn,.modebar .ml,.winbar .wl,.tsub{font-family:var(--f-tit)}
+
+/* superfícies */
+.masthead,.topnav{background:rgba(7,14,24,.80);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px)}
+.masthead{border-bottom:0}
+.card{background:var(--panel);border-color:var(--line);border-radius:16px;box-shadow:var(--sombra);overflow:hidden}
+.scn{background:var(--vidro);border-color:var(--line);border-radius:16px}
+.card .hd{border-bottom-color:var(--line)}
+select,input{background:var(--bg2);color:var(--ink);border-color:var(--line2);border-radius:10px}
+select:focus,input:focus{border-color:var(--steel);box-shadow:0 0 0 3px var(--steelsoft)}
+option{background:#0a1420;color:var(--ink)}
+
+/* botões */
+.btn{background:var(--vidro2);color:var(--ink);border-color:var(--line2);border-radius:10px}
+.btn:hover{border-color:var(--steel);color:var(--accent)}
+.btn.primary,.btn.on2{background:var(--steel);color:#04131f;border-color:var(--steel)}
+input[type=range]{accent-color:var(--steel)}
+
+/* tabelas / heat / matriz */
+tbody tr:hover{background:rgba(120,160,220,.08)}
+.matrix-box{background:var(--bg2);border-color:var(--line)}
+.mcell{background:var(--bg2)}
+.heat td{border-bottom-color:var(--bg)}
+.heat td.sec{background:var(--panel)!important;color:var(--ink);border-bottom-color:var(--line)}
+.roundbars .rb{background:rgba(120,160,220,.18)}
+.roundbars .rb.cur{background:var(--steel)}
+.prog{background:rgba(120,160,220,.16)}
+.seg.imp{background:#4a5a6a}
+.lgdot.imp{background:#4a5a6a}
+
+/* seletor de modelo */
+.mbtn{background:var(--vidro2);border-color:var(--line2);color:var(--ink);border-radius:12px}
+.mbtn.on{background:var(--steel);border-color:var(--steel);color:#04131f}
+.mbtn.on span{color:rgba(4,19,31,.72)}
+.mbtn[data-m="iioas"].on,.mbtn[data-m="iioaspoa"].on{background:var(--teal);border-color:var(--teal)}
+.mbtn[data-m="iioaspoa"].on span,.mbtn[data-m="iioas"].on span{color:rgba(4,25,17,.72)}
+.disc{background:rgba(52,211,153,.09);border-left-color:var(--teal)}
+.disc .t{color:var(--teal)}
+
+/* marca e abas-ambiental */
+.brand .b-mark{background:var(--teal)}
+.brand .b-title{color:var(--teal)}
+.tab.env{color:#7fe3c0} .tab.env:hover{color:var(--teal)}
+.tab.env.on{color:var(--teal);border-bottom-color:var(--teal)}
+
+/* ---------- janelas PSA / UC ---------- */
+.winbar .wl{color:var(--faint)}
+.wbtn{background:var(--vidro2);border-color:var(--line2);color:var(--ink);border-radius:12px}
+.wbtn span{color:var(--faint)}
+.wbtn.on{border-color:var(--steel);background:rgba(56,189,248,.12)}.wbtn.on span{color:var(--accent)}
+.ptabs,.utabs{border-bottom-color:var(--line2)}
+.ptab,.utab{color:var(--slate)}
+.ptab.on,.utab.on{color:var(--accent);border-bottom-color:var(--accent)}
+
+/* caixas de fórmula (já escuras → navy profundo) */
+.psa-fxbox,.uc-fxbox{background:linear-gradient(140deg,#07121f,#0a1a2b);border:1px solid var(--line2);color:var(--ink)}
+.psa-fxbox .fx-lab,.uc-fxbox .fx-lab{color:#7fd9ff}
+.psa-fxbox .fx-x,.uc-fxbox .fx-x{color:var(--ouro)}
+.psa-fxbox .fx-n,.uc-fxbox .fx-n{color:var(--teal)}
+.psa-fxbox .fx-z{color:#9cc3ef}
+.psa-fxbox .fx-leg,.uc-fxbox .fx-leg{color:var(--slate)}
+
+/* inputs específicos */
+.psa-input,.uc-input,.uc-sel,.uc-dt select,.tsel{background:var(--bg2);color:var(--ink);border-color:var(--line2)}
+.psa-ha-lab,.uc-field label{color:var(--ink)}
+.psa-ha-hint,.uc-field .hint,.uc-note,.psa-mini,.opt .od,.optsel .od{color:var(--faint)}
+.uc-note b,.psa-mini b{color:var(--ink)}
+
+/* grupos / caixas verdes claras → vidro esverdeado */
+.tgrp-h{color:var(--teal);background:rgba(52,211,153,.10);border-color:rgba(52,211,153,.24)}
+.tgrp-h .mx{color:var(--ambar)}
+.opt{border-top-color:var(--line)} .opt .ot,.opt2 .ot,.optsel .ot,.opt2sel .ot{color:var(--ink)}
+.opt .op,.opt2 .op,.opt .op{color:var(--ambar)}
+.opt2:hover{background:rgba(120,160,220,.08)}
+.optsel{border-top-color:var(--line)}
+.tsub{color:var(--ambar)}
+.nmeter{background:rgba(120,160,220,.16)} .nmeter>i{background:var(--teal)}
+
+.psa-sub,.uc-sub{background:rgba(52,211,153,.09);border-color:rgba(52,211,153,.22);color:var(--slate)}
+.psa-sub b,.uc-sub b{color:var(--teal)}
+.psa-step,.psa-fx-live{background:rgba(56,189,248,.08);border-color:var(--line2);color:var(--ink)}
+.psa-big{background:rgba(52,211,153,.10);border-color:rgba(52,211,153,.22)}
+.psa-big .lb{color:var(--slate)} .psa-big .bnum,.psa-pago .vl,.psa-tab .pz{color:var(--teal)}
+.gloss{color:var(--slate)} .gloss b{color:var(--ink)}
+.psa-sobre p{color:var(--slate)} .psa-sobre b{color:var(--ink)}
+.psa-ex{background:var(--vidro2);border-left-color:var(--teal);color:var(--slate)}
+.psa-ex b{color:var(--ink)}
+.psa-tab th{background:rgba(120,160,220,.10);border-bottom-color:var(--line2);color:var(--ink)}
+.psa-tab td{border-bottom-color:var(--line);color:var(--slate)}
+.psa-tab tfoot td{background:rgba(52,211,153,.10);border-top-color:var(--line2);color:var(--teal)}
+
+/* UC — resultados */
+.uc-big{background:rgba(52,211,153,.10);border-color:rgba(52,211,153,.22)}
+.uc-big .lb{color:var(--slate)} .uc-big .bnum{color:var(--teal)} .uc-big .ex{color:var(--faint)}
+.uc-big.gold{background:rgba(251,191,36,.10);border-color:rgba(251,191,36,.28)}.uc-big.gold .bnum{color:var(--ambar)}
+.uc-row{border-bottom-color:var(--line);color:var(--slate)}
+.uc-row .v{color:var(--ink)} .uc-row .v.g{color:var(--teal)} .uc-row .v.r{color:var(--brick)}
+.uc-exc-col{background:var(--vidro2);border-color:var(--line2)}
+.uc-exc-col .lb{color:var(--slate)} .uc-exc-col .lb .sm{color:var(--faint)}
+.uc-exc-col .n{color:var(--ink)} .uc-exc-col .s{color:var(--faint)} .uc-exc-col .s b{color:var(--ink)}
+.uc-exc-col.gold{background:rgba(251,191,36,.10);border-color:rgba(251,191,36,.28)}
+.uc-exc-col.gold .n,.uc-exc-col.gold .s b{color:var(--ambar)}
+.uc-bar{background:rgba(120,160,220,.14);border-color:var(--line2)}
+.uc-legend{color:var(--slate)}
+.uc-verdict.ok{background:rgba(52,211,153,.10);border-color:rgba(52,211,153,.26);color:#bdf0da}
+.uc-verdict.warn{background:rgba(251,191,36,.10);border-color:rgba(251,191,36,.30);color:#f4dca0}
+.uc-verdict.alert{background:rgba(244,114,182,.10);border-color:rgba(244,114,182,.30);color:#f6c2db}
+/* fases */
+.fase{border:1px solid var(--line2);border-radius:12px;padding:14px 15px;margin-bottom:12px;background:var(--vidro2)}
+.fase-h{display:flex;justify-content:space-between;align-items:center;margin-bottom:11px}
+.fase-n{font-family:var(--f-tit);font-weight:700;font-size:12.5px;letter-spacing:.6px;text-transform:uppercase;color:var(--accent)}
+.fase-x{appearance:none;background:none;border:1px solid var(--line2);color:var(--faint);border-radius:7px;padding:3px 10px;font:inherit;font-size:11.5px;cursor:pointer}
+.fase-x:hover{border-color:var(--brick);color:var(--brick)}
+.fase-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media(max-width:620px){.fase-grid{grid-template-columns:1fr}}
+.fase-grid label{display:block;font-size:11px;color:var(--slate);margin-bottom:5px;font-weight:600}
+.fase-grid .uc-input{width:100%}
+.fase-grid .uc-dt select{flex:1}
+.fase-out{margin-top:12px;border-top:1px solid var(--line);padding-top:9px}
+.fase-row{display:flex;justify-content:space-between;gap:12px;font-size:12.5px;color:var(--slate);padding:4px 0}
+.fase-row b{color:var(--ink);font-weight:700;text-align:right;white-space:nowrap}
+.fase-row b.g{color:var(--teal)}.fase-row b.gold{color:var(--ambar)}
+.fase-tot{margin-top:8px;padding:14px 16px;border-radius:12px;background:rgba(56,189,248,.08);border:1px solid var(--line2)}
+.fase-tot-h{font-family:var(--f-tit);font-weight:700;font-size:11.5px;letter-spacing:.7px;text-transform:uppercase;color:var(--accent);margin-bottom:9px}
+.fase-trow{display:flex;justify-content:space-between;gap:12px;font-size:13px;color:var(--slate);padding:6px 0;border-bottom:1px solid var(--line)}
+.fase-trow:last-child{border-bottom:none}
+.fase-trow b{color:var(--ink);font-weight:700;white-space:nowrap}.fase-trow b.g{color:var(--teal)}.fase-trow b.gold{color:var(--ambar)}
+#uc_addfase{margin-top:2px}
 </style></head><body>
 
 <div class="masthead">
@@ -179,6 +439,15 @@
 </div></div>
 
 <div class="wrap">
+
+ <div class="winbar">
+  <span class="wl">Ferramenta</span>
+  <button class="wbtn on" data-w="mip">Impacto econômico<span>investimento → produção, emprego, renda, emissões</span></button>
+  <button class="wbtn" data-w="psa">PSA — serviços ambientais (RS)<span>pagamento por conservação · RPPN</span></button>
+  <button class="wbtn" data-w="uc">Impacto Unidade de Conservação<span>compensação ambiental · SNUC 0,5% · fiscalização</span></button>
+ </div>
+
+ <div id="win_mip">
 
  <!-- seletor de modelo: dois simuladores -->
  <div class="modebar">
@@ -478,6 +747,300 @@
 
  <div class="src">
   <b>Fonte:</b> Matrizes de insumo-produto FEE-RS (2019) e IBGE (TRU 2020); emprego e renda: IBGE/CEMPRE, RAIS (Base dos Dados) e PNAD Contínua. &nbsp; <b>Elaboração própria</b> &middot; Projeto Impacto Ambiental &middot; Porto Alegre.
+ </div>
+ </div><!--/win_mip-->
+
+ <!-- ============ JANELA PSA (RS / RPPN) ============ -->
+ <div id="win_psa" style="display:none">
+  <div class="ptabs">
+   <button class="ptab on" data-pt="calc">Calculadora</button>
+   <button class="ptab" data-pt="tabua">Tábua de valoração</button>
+   <button class="ptab" data-pt="sobre">Como funciona</button>
+  </div>
+
+  <!-- ABA CALCULADORA -->
+  <div class="ppane on" id="pp_calc">
+   <div class="card">
+    <div class="hd"><h2 class="serif">Pagamento por Serviços Ambientais — RPPN</h2>
+     <div class="d">Rio Grande do Sul · Programa Estadual de PSA (PEPSA · SEMA-RS · Edital nº 01/2024)</div></div>
+    <div class="psa-sub">Uma <b>RPPN</b> (Reserva Particular do Patrimônio Natural) é uma área que um proprietário cria <b>voluntariamente</b> dentro da sua terra para proteger a natureza, para sempre. O Estado <b>paga esse dono todo ano</b> por manter a área conservada. Quanto mais a reserva presta serviços ambientais — <b>biodiversidade, água e boa gestão</b> — maior é a nota <b>N</b> e maior o pagamento por hectare. Preencha abaixo para estimar o valor.</div>
+    <div class="psa-fxbox">
+     <div class="fx-lab">A fórmula do edital (item 10)</div>
+     <div class="fx-main">VALOR<sub>por ano</sub> = <span class="fx-x">R$ 100</span> &times; (1 + <span class="fx-n">N</span>) &times; <span class="fx-z">Z</span></div>
+     <div class="fx-leg"><span class="fx-x"><b>R$ 100</b></span> = valor-base pago por hectare &nbsp;&middot;&nbsp; <span class="fx-n"><b>N</b></span> = nota ambiental da reserva (0 a 9, somada na Tábua de Valoração) &nbsp;&middot;&nbsp; <span class="fx-z"><b>Z</b></span> = tamanho da reserva, em hectares &nbsp;&middot;&nbsp; limite de <b>R$ 40.000/ano</b> por reserva</div>
+    </div>
+   </div>
+
+   <div class="psa-grid">
+    <div class="card">
+     <div class="hd"><h2>1 &middot; Tamanho da reserva</h2></div>
+     <label class="psa-ha-lab">Área da RPPN em hectares <span style="color:#7d8a92;font-weight:400">(o <b style="color:#4d6472">Z</b> da fórmula)</span></label>
+     <input id="psa_ha" type="number" value="50" min="0" step="1" class="psa-input">
+     <div class="psa-ha-hint">1 hectare = 10.000 m² (um quadrado de 100 m × 100 m).</div>
+
+     <div class="hd" style="margin-top:22px"><h2>2 &middot; Nota ambiental (N)</h2><div class="d">Marque o que a reserva cumpre. O que é cada item está na aba <b>Tábua de valoração</b>.</div></div>
+
+     <div class="tgrp-h">Biodiversidade <span class="mx">máx 3,5</span></div>
+     <label class="opt2"><input type="checkbox" class="tbx" value="1"><span class="ot">Mais de 50% com vegetação nativa</span><span class="op">1,0</span></label>
+     <label class="opt2"><input type="checkbox" class="tbx" value="1"><span class="ot">Projeto de restauração em execução</span><span class="op">1,0</span></label>
+     <label class="opt2"><input type="checkbox" class="tbx" value="0.75"><span class="ot">Excede / é adicional à Reserva Legal</span><span class="op">0,75</span></label>
+     <label class="opt2"><input type="checkbox" class="tbx" value="0.75"><span class="ot">Conectada a UC / corredor ecológico</span><span class="op">0,75</span></label>
+
+     <div class="tgrp-h">Recursos hídricos <span class="mx">máx 2,0</span></div>
+     <label class="opt2"><input type="checkbox" class="tbx" value="1"><span class="ot">Tem nascentes</span><span class="op">1,0</span></label>
+     <label class="opt2"><input type="checkbox" class="tbx" value="1"><span class="ot">Restaura APP (margens, nascentes, banhados)</span><span class="op">1,0</span></label>
+
+     <div class="tgrp-h">Gestão da reserva <span class="mx">máx 3,5</span></div>
+     <div class="opt2sel"><span class="ot">Plano de manejo</span><select class="tsel"><option value="0" selected>não possui (0)</option><option value="0.5">submetido, sem ações (0,5)</option><option value="1">submetido, com ações (1,0)</option></select></div>
+     <div class="tsub">Controle de fogo (soma até 0,3)</div>
+     <label class="opt2"><input type="checkbox" class="tbx" value="0.1"><span class="ot">Mantém aceiros</span><span class="op">0,1</span></label>
+     <label class="opt2"><input type="checkbox" class="tbx" value="0.1"><span class="ot">Equipamentos ou brigada de incêndio</span><span class="op">0,1</span></label>
+     <label class="opt2"><input type="checkbox" class="tbx" value="0.1"><span class="ot">Sinalização / campanha contra o fogo</span><span class="op">0,1</span></label>
+     <div class="tsub">Acessos (soma até 0,2)</div>
+     <label class="opt2"><input type="checkbox" class="tbx" value="0.1"><span class="ot">Sinalização de proibição</span><span class="op">0,1</span></label>
+     <label class="opt2"><input type="checkbox" class="tbx" value="0.1"><span class="ot">Cercamento / isolamento</span><span class="op">0,1</span></label>
+     <label class="opt2"><input type="checkbox" class="tbx" value="1"><span class="ot">Mapa georreferenciado</span><span class="op">1,0</span></label>
+     <div class="opt2sel"><span class="ot">Pesquisa / Educação ambiental</span><select class="tsel"><option value="0" selected>nenhuma (0)</option><option value="0.75">realiza uma (0,75)</option><option value="1">realiza as duas (1,0)</option></select></div>
+    </div>
+
+    <div class="card psa-res">
+     <div class="hd"><h2>Resultado</h2></div>
+     <div style="font-size:12.5px;color:#5d6f79">Nota ambiental &mdash; <b id="psa_N" style="color:#1b6245">0,00</b> de 9</div>
+     <div class="nmeter"><i id="psa_meter" style="width:0%"></i></div>
+     <div class="psa-step" id="psa_fx">&mdash;</div>
+     <div class="psa-big"><div class="lb">Pagamento por ano</div><div class="bnum" id="psa_pago">&mdash;</div><div class="ex" id="psa_cap" style="display:none;color:#a5493f">cortado pelo limite de R$ 40.000/ano</div></div>
+     <div class="psa-mini">Multiplicador <b id="psa_mult">&mdash;</b> &middot; equivale a <b id="psa_rha">&mdash;</b><br>Valor pela fórmula antes do limite: <b id="psa_bruto">&mdash;</b></div>
+    </div>
+   </div>
+  </div>
+
+  <!-- ABA TÁBUA -->
+  <div class="ppane" id="pp_tabua">
+   <div class="card">
+    <div class="hd"><h2>Tábua de Valoração &mdash; de onde vem o N</h2><div class="d">Os pontos marcados somam o N (máx. 9). Preenchida pelo proprietário e validada em vistoria técnica da SEMA. Anexo 2 do Edital PEPSA nº 01/2024.</div></div>
+    <table class="psa-tab">
+     <thead><tr><th>Grupo</th><th>Item</th><th>Resposta</th><th>Peso</th><th>Nota máx. do item</th></tr></thead>
+     <tbody>
+      <tr><td rowspan="8"><b>Biodiversidade</b><br><span class="note">máx 3,5</span></td><td rowspan="2">Áreas naturais da RPPN</td><td>Possui mais de 50% da RPPN coberta por vegetação nativa</td><td>1</td><td rowspan="2">1</td></tr>
+      <tr><td>Possui menos de 50% da RPPN coberta por vegetação nativa</td><td>0</td></tr>
+      <tr><td rowspan="2">Projeto de restauração</td><td>Possui projeto de restauração em execução</td><td>1</td><td rowspan="2">1</td></tr>
+      <tr><td>Não possui projeto de restauração em execução</td><td>0</td></tr>
+      <tr><td rowspan="2">Delimitação da RPPN</td><td>A RPPN excede a área de Reserva Legal ou é adicional a ela</td><td>0,75</td><td rowspan="2">0,75</td></tr>
+      <tr><td>A RPPN se localiza apenas na Reserva Legal da propriedade (ou parte)</td><td>0</td></tr>
+      <tr><td rowspan="2">Conexão com áreas naturais</td><td>Tem conexão física com UC de proteção integral, está em zona de amortecimento, em corredor ecológico ou em UC de uso sustentável</td><td>0,75</td><td rowspan="2">0,75</td></tr>
+      <tr><td>Não</td><td>0</td></tr>
+
+      <tr><td rowspan="4"><b>Recursos hídricos</b><br><span class="note">máx 2,0</span></td><td rowspan="2">Presença de nascentes</td><td>Sim</td><td>1</td><td rowspan="2">1</td></tr>
+      <tr><td>Não</td><td>0</td></tr>
+      <tr><td rowspan="2">Restauração de APP</td><td>Realiza ações de restauração em APP (nascentes, rios, banhados e outras, Lei nº 12.651/2012)</td><td>1</td><td rowspan="2">1</td></tr>
+      <tr><td>Não há ações de restauração em APP</td><td>0</td></tr>
+
+      <tr><td rowspan="11"><b>Gestão da RPPN</b><br><span class="note">máx 3,5</span></td><td rowspan="3">Plano de manejo</td><td>Submetido ao órgão responsável, com ações executadas ou em execução</td><td>1</td><td rowspan="3">1</td></tr>
+      <tr><td>Submetido, mas nenhuma ação executada ou em execução</td><td>0,5</td></tr>
+      <tr><td>Não possui plano de manejo</td><td>0</td></tr>
+      <tr><td rowspan="3">Controle de fogo</td><td>Faz abertura e manutenção de aceiro</td><td>0,1</td><td rowspan="3">0,3</td></tr>
+      <tr><td>Possui equipamentos de combate a incêndio ou brigada</td><td>0,1</td></tr>
+      <tr><td>Existe sinalização ou campanha de conscientização contra o fogo</td><td>0,1</td></tr>
+      <tr><td rowspan="2">Acessos</td><td>Sinalização de proibição (entrada de terceiros, caça, pesca, retirada de vegetais)</td><td>0,1</td><td rowspan="2">0,2</td></tr>
+      <tr><td>Existe cercamento / isolamento na RPPN</td><td>0,1</td></tr>
+      <tr><td>Mapeamento</td><td>Possui mapa georreferenciado delimitando a RPPN</td><td>1</td><td>1</td></tr>
+      <tr><td rowspan="3">Pesquisa científica ou Educação ambiental</td><td>Realiza as duas atividades</td><td>1</td><td rowspan="3">1</td></tr>
+      <tr><td>Realiza uma das atividades</td><td>0,75</td></tr>
+      <tr><td>Não realiza nenhuma das atividades</td><td>0</td></tr>
+     </tbody>
+     <tfoot><tr><td colspan="4">Nota máxima total (N)</td><td>9,00</td></tr></tfoot>
+    </table>
+    <p class="note" style="margin-top:12px;line-height:1.6">Reprodução integral do <b>Anexo 2 — Tábua de Valoração</b> do Edital PEPSA nº 01/2024 (RPPN/RS). Em cada item, marca-se uma resposta; o peso dela entra na soma. O N é a soma de todos os itens (máx. 9), validado em vistoria técnica da SEMA.</p>
+   </div>
+  </div>
+
+  <!-- ABA COMO FUNCIONA -->
+  <div class="ppane psa-sobre" id="pp_sobre">
+   <div class="card">
+    <div class="hd"><h2>Como funciona o cálculo</h2></div>
+    <p>O valor <b>anual</b> pago a cada RPPN sai de uma fórmula única (Edital PEPSA nº 01/2024, item 10):</p>
+    <div class="psa-fxbox" style="margin:4px 0 12px"><div class="fx-main" style="font-size:22px">VALOR = <span class="fx-x">R$ 100</span> &times; (1 + <span class="fx-n">N</span>) &times; <span class="fx-z">Z</span></div></div>
+    <p><b>R$ 100 (X)</b> é o valor-base por hectare. <b>N</b> é a pontuação ambiental da Tábua de Valoração (0 a 9): quanto mais conservada, conectada, com nascentes e bem gerida a reserva, maior o N. <b>Z</b> é a área em hectares. O termo <b>(1 + N)</b> multiplica o valor-base por <b>1</b> (N=0) a <b>10</b> (N=9) — ou seja, de R$ 100 a R$ 1.000 por hectare/ano.</p>
+    <p><b>Teto:</b> qualquer que seja o resultado, paga-se no máximo <b>R$ 40.000/ano</b> por reserva. O pagamento é feito em <b>parcelas</b>, condicionado ao cumprimento das ações do Projeto Individual (vistoria/monitoramento da SEMA).</p>
+    <div class="psa-ex"><b>Exemplo:</b> RPPN de 30 ha que marca vegetação &gt;50% (1) + restauração (1) + nascentes (1) + restauração APP (1) + plano de manejo com ações (1) + mapa (1) &rarr; N = 6,0. &nbsp; VALOR = 100 &times; (1+6) &times; 30 = 100 &times; 7 &times; 30 = <b>R$ 21.000/ano</b>.</div>
+    <p class="note" style="margin-top:12px;line-height:1.6">Base legal: Lei Estadual 15.434/2020 (art. 21) · Decreto 56.640/2022 (institui o PEPSA) · Decreto 57.065/2023 · Edital PEPSA nº 01/2024 (RPPN) e Anexo 2 (Tábua de Valoração). Órgão: Secretaria do Meio Ambiente e Infraestrutura do RS (SEMA/RS) e Comitê Gestor do PEPSA. Esta é a métrica do <b>subprograma de RPPN</b>; outros subprogramas (ex.: arroz) têm editais e metodologias próprias.</p>
+   </div>
+   <div class="card">
+    <div class="hd"><h2>Glossário &mdash; o que é cada termo</h2></div>
+    <ul class="gloss">
+     <li><b>RPPN</b> — Reserva Particular do Patrimônio Natural. Área que um proprietário cria voluntariamente na sua terra para proteger a natureza, de forma permanente.</li>
+     <li><b>Serviço ambiental</b> — benefício que a natureza presta à sociedade (água limpa, ar, polinização, sequestro de carbono, biodiversidade). O PSA paga para quem mantém esses benefícios.</li>
+     <li><b>APP (Área de Preservação Permanente)</b> — faixas que a lei protege sempre: margens de rios, nascentes, banhados, topos de morro.</li>
+     <li><b>Reserva Legal</b> — percentual da propriedade rural que, por lei, deve ficar com vegetação nativa (20% na Mata Atlântica do RS).</li>
+     <li><b>Unidade de Conservação (UC)</b> — área protegida oficial (parque, estação ecológica, APA, refúgio de vida silvestre etc.).</li>
+     <li><b>Corredor ecológico</b> — faixa de vegetação que liga duas áreas naturais, permitindo que animais e plantas circulem entre elas.</li>
+     <li><b>Zona de amortecimento</b> — entorno de uma UC, onde o uso da terra é mais controlado para proteger a unidade.</li>
+     <li><b>Plano de manejo</b> — documento técnico que define como a reserva será usada e conservada.</li>
+     <li><b>Aceiro</b> — faixa de terra limpa (sem vegetação) que impede o fogo de se espalhar.</li>
+     <li><b>N (nota / pontuação)</b> — soma dos pontos da Tábua de Valoração (0 a 9). Mede a qualidade ambiental da reserva e multiplica o valor-base por hectare.</li>
+    </ul>
+   </div>
+  </div>
+ </div>
+</div>
+
+<div id="win_uc" style="display:none">
+ <div class="utabs">
+  <button class="utab on" data-ut="comp">Compensação (0,5%)</button>
+  <button class="utab" data-ut="fisc">Fiscalização e inflação</button>
+  <button class="utab" data-ut="sobre">Como funciona</button>
+ </div>
+
+ <!-- ABA COMPENSAÇÃO -->
+ <div class="upane on" id="up_comp">
+  <div class="card">
+   <div class="hd"><h2 class="serif">Compensação ambiental de Unidades de Conservação</h2>
+    <div class="d">SNUC · Lei federal 9.985/2000, art. 36 — empreendimento de significativo impacto ambiental</div></div>
+   <div class="uc-sub">Quem constrói uma obra de <b>significativo impacto ambiental</b> (licenciada com EIA/RIMA) precisa <b>apoiar a implantação e manutenção de Unidades de Conservação</b>. A lei fixa o <b>teto</b>: no máximo <b>0,5% do valor total do empreendimento</b>. Informe o investimento e o setor da obra para ver a pegada de carbono da cadeia e o valor da compensação.</div>
+   <div class="uc-fxbox">
+    <div class="fx-lab">A regra do SNUC (art. 36)</div>
+    <div class="fx-main">COMPENSAÇÃO<sub>máx</sub> = <span class="fx-x">0,5%</span> &times; <span class="fx-n">valor do empreendimento</span></div>
+    <div class="fx-leg"><span class="fx-x"><b>0,5%</b></span> é o <b>limite legal</b> (o órgão pode fixar percentual menor conforme o grau de impacto) &nbsp;&middot;&nbsp; o <span class="fx-n"><b>valor do empreendimento</b></span> é o custo total de implantação apurado no licenciamento.</div>
+   </div>
+  </div>
+
+  <div class="uc-grid">
+   <div class="card">
+    <div class="hd"><h2>1 &middot; O empreendimento</h2></div>
+    <div class="uc-field">
+     <label>Valor do investimento (R$ milhões)</label>
+     <input id="uc_val" type="number" value="10" min="0" step="0.1" class="uc-input">
+     <div class="hint">Custo total de implantação declarado no licenciamento.</div>
+    </div>
+    <div class="uc-field">
+     <label>Setor da obra (MIP · RS — 52 setores)</label>
+     <select id="uc_setor" class="uc-sel"></select>
+     <div class="hint">Define a cadeia produtiva usada para estimar a pegada de carbono — igual à janela <b>Impacto econômico</b> (lente de pegada completa do RS).</div>
+    </div>
+   </div>
+
+   <div class="card uc-res">
+    <div class="hd"><h2>2 &middot; Resultado</h2></div>
+    <div class="uc-big gold">
+     <div class="lb">Compensação ambiental (teto 0,5%)</div>
+     <div class="bnum" id="uc_comp">—</div>
+     <div class="ex">0,5% &times; <span id="uc_comp_base">—</span></div>
+    </div>
+    <div class="uc-big">
+     <div class="lb">Impacto em carbono da cadeia</div>
+     <div class="bnum" id="uc_co2">—</div>
+     <div class="ex" id="uc_co2ex">pegada completa (cadeia produtiva do RS)</div>
+    </div>
+    <div class="uc-row"><span>Custo social do carbono emitido</span><span class="v" id="uc_ccost">—</span></div>
+    <div class="uc-row"><span>Equivale a quanto do investimento</span><span class="v" id="uc_cpct">—</span></div>
+    <div class="uc-row"><span>Preço do carbono usado</span><span class="v" id="uc_cpreco">—</span></div>
+    <div class="uc-note">O <b>custo do carbono</b> e a <b>compensação de 0,5%</b> são contas independentes: o primeiro valora as emissões da cadeia; o segundo é a obrigação legal do SNUC sobre o valor da obra. O preço do carbono segue a base escolhida na janela <b>Impacto econômico</b>.</div>
+   </div>
+  </div>
+ </div>
+
+ <!-- ABA FISCALIZAÇÃO -->
+ <div class="upane" id="up_fisc">
+  <div class="card">
+   <div class="hd"><h2 class="serif">Fiscalização — valor apurado e inflação</h2>
+    <div class="d">A obra demora anos. Se o valor apurado for maior que o declarado, parte pode ser só inflação de preços no período — não mais obra.</div></div>
+   <div class="uc-sub">O empreendedor pode <b>subestimar</b> o valor para pagar menos compensação. Os fiscais apuram o <b>valor de fato</b>. Mas uma obra longa encarece só pela <b>inflação</b>: se foi declarado R$ 10 mi e apurado R$ 12 mi, parte dos R$ 2 mi a mais pode ser reajuste de preços, não material novo. Aqui descontamos a inflação do período (IGP-M, IPCA ou INCC-M) — com uma <b>banda de +25%</b>, porque POA pode ter subido mais que o índice nacional — e vemos quanto do excedente é, de fato, <b>obra adicional</b> sujeita aos 0,5%.</div>
+  </div>
+
+  <div class="uc-grid">
+   <div class="card">
+    <div class="hd"><h2>1 &middot; Valores e período</h2></div>
+    <div class="uc-field">
+     <label>Valor declarado pelo empreendedor (R$ milhões)</label>
+     <input id="uc_decl" type="number" value="10" min="0" step="0.1" class="uc-input">
+     <div class="hint">O que foi informado no início do licenciamento.</div>
+    </div>
+    <div class="uc-field">
+     <label>Valor apurado pelos fiscais (R$ milhões)</label>
+     <input id="uc_apur" type="number" value="12" min="0" step="0.1" class="uc-input">
+     <div class="hint">O custo de fato verificado ao final da obra.</div>
+    </div>
+    <div class="uc-field">
+     <label>Índice de inflação</label>
+     <select id="uc_idx" class="uc-sel">
+      <option value="incc">INCC-M — construção civil (o mais aderente a obras)</option>
+      <option value="igpm">IGP-M — preços no atacado</option>
+      <option value="ipca">IPCA — preços ao consumidor (oficial)</option>
+     </select>
+     <div class="hint">Para obras, o <b>INCC-M</b> (Índice Nacional de Custo da Construção) costuma ser o mais adequado.</div>
+    </div>
+    <div class="uc-field">
+     <label>Data da Estimativa Orçamentária</label>
+     <div class="uc-dt"><select id="uc_m0" class="uc-m"></select><select id="uc_a0" class="uc-a"></select></div>
+     <div class="hint">Mês/ano do orçamento declarado — ponto de partida da correção.</div>
+    </div>
+    <div class="uc-field">
+     <label>Fim da obra</label>
+     <div class="uc-dt"><select id="uc_m1" class="uc-m"></select><select id="uc_a1" class="uc-a"></select></div>
+     <div class="hint" id="uc_per">—</div>
+    </div>
+   </div>
+
+   <div class="card uc-res">
+    <div class="hd"><h2>2 &middot; Diagnóstico</h2></div>
+
+    <div class="uc-big">
+     <div class="lb">Diferença bruta a cobrar (sem descontar inflação)</div>
+     <div class="bnum" id="uc_difbruta">—</div>
+     <div class="ex">0,5% &times; (apurado − declarado)</div>
+    </div>
+
+    <div class="uc-legend">
+     <span><i class="b-base" style="background:#9fc3ad"></i> declarado</span>
+     <span><i style="background:#e6cf8f"></i> inflação</span>
+     <span><i style="background:#d7e0ea"></i> banda +25%</span>
+     <span><i style="background:#c98b74"></i> excede a banda</span>
+    </div>
+    <div class="uc-bar" id="uc_bar"></div>
+
+    <div class="uc-row"><span>Inflação acumulada no período (<span id="uc_idxnome">—</span>)</span><span class="v" id="uc_acc">—</span></div>
+    <div class="uc-row"><span>Declarado corrigido só pela inflação</span><span class="v" id="uc_corr">—</span></div>
+    <div class="uc-row"><span>Banda superior (inflação +25%)</span><span class="v" id="uc_band">—</span></div>
+
+    <div class="uc-exc2">
+     <div class="uc-exc-col">
+      <div class="lb">Excedente sobre o índice puro<span class="sm">apurado − corrigido</span></div>
+      <div class="n" id="uc_exc_infl">—</div>
+      <div class="s">compensação 0,5% = <b id="uc_comp_infl">—</b></div>
+     </div>
+     <div class="uc-exc-col gold">
+      <div class="lb">Excedente sobre a banda +25%<span class="sm">apurado − banda</span></div>
+      <div class="n" id="uc_exc">—</div>
+      <div class="s">compensação 0,5% = <b id="uc_compexc">—</b></div>
+     </div>
+    </div>
+    <div class="uc-note">O <b>índice puro</b> é o critério estrito; a <b>banda +25%</b> dá a POA o benefício da dúvida (preços locais podem ter subido mais). O valor devido de fato fica <b>entre os dois</b> — ou zero, se o apurado nem supera a inflação.</div>
+
+    <div class="uc-verdict ok" id="uc_verdict">—</div>
+   </div>
+  </div>
+
+  <div class="card" id="uc_fases_card">
+   <div class="hd"><h2>Cobrança por fase (etapas da obra)</h2>
+    <div class="d">Se a obra é cobrada por etapa, informe cada fase. O início padrão é a Data da Estimativa Orçamentária; o fim muda por fase. A valoração é a mesma — cada fase recebe o seu ajuste de inflação e a sua contribuição de 0,5%.</div></div>
+   <div id="uc_fases"></div>
+   <button type="button" class="btn" id="uc_addfase">+ Adicionar fase</button>
+   <div id="uc_fases_tot"></div>
+  </div>
+ </div>
+
+ <!-- ABA SOBRE -->
+ <div class="upane psa-sobre" id="up_sobre">
+  <div class="card">
+   <div class="hd"><h2>Como funciona o cálculo</h2></div>
+   <p>Esta janela tem duas contas, ligadas ao mesmo empreendimento.</p>
+   <p><b>1) Compensação (0,5%).</b> O SNUC (Lei 9.985/2000, art. 36) obriga obras de <b>significativo impacto ambiental</b> a apoiar Unidades de Conservação. O valor é <b>no máximo 0,5% do custo total</b> do empreendimento — o órgão licenciador pode fixar percentual menor conforme o grau de impacto (o STF, na ADI 3.378, derrubou o <i>piso</i> fixo, mas manteve o <b>teto de 0,5%</b>). A pegada de carbono da cadeia usa a mesma Matriz Insumo-Produto do RS da janela <b>Impacto econômico</b> (lente de pegada completa).</p>
+   <p><b>2) Fiscalização e inflação.</b> O empreendedor pode declarar um valor baixo; os fiscais apuram o valor real. A diferença bruta a cobrar é simplesmente <b>0,5% × (apurado − declarado)</b>. Mas uma obra leva anos, e preços sobem só por <b>inflação</b>. Então:</p>
+   <div class="psa-ex"><b>Passo a passo.</b> (a) inflação acumulada no período = índice<sub>fim</sub> / índice<sub>início</sub> − 1; (b) <b>declarado corrigido</b> = declarado × (1 + inflação); (c) <b>banda superior</b> = declarado × (1 + inflação × 1,25), uma folga de 25% porque POA pode ter encarecido mais que o índice nacional; (d) calculam-se <i>separadamente</i> o <b>excedente sobre o índice puro</b> = apurado − corrigido e o <b>excedente sobre a banda</b> = apurado − banda (cada um quando positivo); (e) a <b>compensação adicional</b> é 0,5% de cada excedente. O critério estrito usa o índice puro; o tolerante usa a banda; o valor devido fica <b>entre os dois</b>.</div>
+   <div class="psa-ex"><b>Exemplo.</b> Declarado R$ 10 mi, apurado R$ 12 mi, INCC-M de 15% no período. Corrigido = 10 × 1,15 = R$ 11,5 mi. Banda (+25%) = 10 × (1 + 0,15×1,25) = R$ 11,875 mi. O apurado (12) supera os dois: excede o <b>índice puro</b> em 12 − 11,5 = R$ 0,5 mi (0,5% = <b>R$ 2.500</b>) e a <b>banda</b> em 12 − 11,875 = R$ 0,125 mi (0,5% = <b>R$ 625</b>). A compensação adicional fica entre <b>R$ 625</b> e <b>R$ 2.500</b>, conforme o critério adotado.</div>
+   <p><b>Índices.</b> IGP-M (189), IPCA (433) e INCC-M (192) vêm do <b>Banco Central (SGS)</b>, série mensal de jan/2000 ao último mês disponível. Para obras, o <b>INCC-M</b> — que mede custo da construção — é o mais aderente.</p>
+   <p class="note" style="margin-top:12px;line-height:1.6">Base legal: Lei 9.985/2000 (SNUC), art. 36 · Decreto 4.340/2002, arts. 31-34 · Resolução CONAMA 371/2006 · STF ADI 3.378 (teto de 0,5%). Os índices de inflação são do Sistema Gerenciador de Séries Temporais do Banco Central do Brasil.</p>
+  </div>
  </div>
 </div>
 
@@ -884,5 +1447,207 @@ document.querySelectorAll('.mbtn').forEach(bn=>bn.addEventListener('click',funct
 if(DADOS._meta.arv){ $("veg_cap").value=DADOS._meta.arv.cap; $("veg_anos").value=DADOS._meta.arv.anos; }
 if(DADOS._meta.ind){ $("ind_int").value=DADOS._meta.ind.int; $("ind_prop").value=Math.round(DADOS._meta.ind.prop*100); }
 preencheSetores(); preencheCotacoes(); preencheIIOAS(); updatePriceUI(); renderSim();
+
+/* ---------- janela PSA (RS / RPPN) ---------- */
+function renderPSA(){
+  let N=0;
+  document.querySelectorAll('#pp_calc .tbx:checked').forEach(c=>N+=parseFloat(c.value));
+  document.querySelectorAll('#pp_calc .tsel').forEach(s=>N+=parseFloat(s.value));
+  N=Math.round(N*100)/100;
+  const ha=Math.max(0,parseFloat($("psa_ha").value)||0);
+  const mult=1+N, bruto=100*mult*ha, TETO=40000, pago=Math.min(bruto,TETO);
+  const br=n=>'R$ '+Math.round(n).toLocaleString('pt-BR');
+  const nf=n=>n.toLocaleString('pt-BR',{minimumFractionDigits:2,maximumFractionDigits:2});
+  $("psa_N").textContent=nf(N);
+  var mt=$("psa_meter"); if(mt) mt.style.width=(N/9*100)+'%';
+  $("psa_mult").textContent='× '+nf(mult);
+  $("psa_rha").textContent=br(100*mult)+' por hectare/ano';
+  $("psa_bruto").textContent=br(bruto);
+  $("psa_pago").textContent=br(pago);
+  $("psa_cap").style.display = bruto>TETO ? '' : 'none';
+  $("psa_fx").innerHTML='R$ 100 × (1 + '+nf(N)+') × '+ha.toLocaleString('pt-BR')+' ha<br><b>= '+br(bruto)+' por ano</b>'+(bruto>TETO?' → pago '+br(TETO)+' (limite)':'');
+}
+function setPsaTab(pt){
+  document.querySelectorAll('.ptab').forEach(x=>x.classList.toggle('on',x.dataset.pt===pt));
+  document.querySelectorAll('.ppane').forEach(p=>p.classList.toggle('on',p.id==='pp_'+pt));
+}
+function setWin(w){
+  document.querySelectorAll('.wbtn').forEach(x=>x.classList.toggle('on',x.dataset.w===w));
+  $("win_mip").style.display=w==='mip'?'':'none';
+  $("win_psa").style.display=w==='psa'?'':'none';
+  $("win_uc").style.display=w==='uc'?'':'none';
+  var tn=document.querySelector('.topnav'); if(tn) tn.style.display=w==='mip'?'':'none';
+  if(w==='psa') renderPSA();
+  if(w==='uc') renderUC();
+}
+document.querySelectorAll('.wbtn').forEach(b=>b.addEventListener('click',function(){setWin(this.dataset.w);}));
+document.querySelectorAll('.ptab').forEach(b=>b.addEventListener('click',function(){setPsaTab(this.dataset.pt);}));
+document.querySelectorAll('#pp_calc .tbx, #pp_calc .tsel').forEach(el=>el.addEventListener('change',renderPSA));
+$("psa_ha").addEventListener('input',renderPSA);
+renderPSA();
+
+/* ============ Janela: Impacto Unidade de Conservação ============ */
+const INFL={"meses":[200001,200002,200003,200004,200005,200006,200007,200008,200009,200010,200011,200012,200101,200102,200103,200104,200105,200106,200107,200108,200109,200110,200111,200112,200201,200202,200203,200204,200205,200206,200207,200208,200209,200210,200211,200212,200301,200302,200303,200304,200305,200306,200307,200308,200309,200310,200311,200312,200401,200402,200403,200404,200405,200406,200407,200408,200409,200410,200411,200412,200501,200502,200503,200504,200505,200506,200507,200508,200509,200510,200511,200512,200601,200602,200603,200604,200605,200606,200607,200608,200609,200610,200611,200612,200701,200702,200703,200704,200705,200706,200707,200708,200709,200710,200711,200712,200801,200802,200803,200804,200805,200806,200807,200808,200809,200810,200811,200812,200901,200902,200903,200904,200905,200906,200907,200908,200909,200910,200911,200912,201001,201002,201003,201004,201005,201006,201007,201008,201009,201010,201011,201012,201101,201102,201103,201104,201105,201106,201107,201108,201109,201110,201111,201112,201201,201202,201203,201204,201205,201206,201207,201208,201209,201210,201211,201212,201301,201302,201303,201304,201305,201306,201307,201308,201309,201310,201311,201312,201401,201402,201403,201404,201405,201406,201407,201408,201409,201410,201411,201412,201501,201502,201503,201504,201505,201506,201507,201508,201509,201510,201511,201512,201601,201602,201603,201604,201605,201606,201607,201608,201609,201610,201611,201612,201701,201702,201703,201704,201705,201706,201707,201708,201709,201710,201711,201712,201801,201802,201803,201804,201805,201806,201807,201808,201809,201810,201811,201812,201901,201902,201903,201904,201905,201906,201907,201908,201909,201910,201911,201912,202001,202002,202003,202004,202005,202006,202007,202008,202009,202010,202011,202012,202101,202102,202103,202104,202105,202106,202107,202108,202109,202110,202111,202112,202201,202202,202203,202204,202205,202206,202207,202208,202209,202210,202211,202212,202301,202302,202303,202304,202305,202306,202307,202308,202309,202310,202311,202312,202401,202402,202403,202404,202405,202406,202407,202408,202409,202410,202411,202412,202501,202502,202503,202504,202505,202506,202507,202508,202509,202510,202511,202512,202601,202602,202603,202604,202605,202606,202607,202608,202609],"igpm":[1.0124,1.015943,1.017467,1.019807,1.022969,1.031664,1.047861,1.072905,1.085351,1.089475,1.092635,1.099518,1.106335,1.10888,1.11509,1.12624,1.135926,1.147058,1.164035,1.180098,1.183757,1.197725,1.2109,1.213564,1.217933,1.218664,1.21976,1.226591,1.236772,1.255818,1.280306,1.31001,1.34145,1.393364,1.465679,1.520642,1.556073,1.591552,1.615903,1.630769,1.626529,1.610264,1.603501,1.609594,1.628587,1.634776,1.642786,1.652807,1.667352,1.678856,1.697828,1.718371,1.740882,1.764906,1.788026,1.80984,1.822328,1.829435,1.844437,1.858085,1.865332,1.870928,1.886831,1.903058,1.898871,1.890516,1.884088,1.871842,1.861921,1.873092,1.880585,1.880397,1.897696,1.897886,1.893521,1.885568,1.892733,1.906929,1.910361,1.91743,1.92299,1.932028,1.946518,1.952747,1.962511,1.96781,1.9745,1.97529,1.97608,1.981218,1.986765,2.006236,2.032116,2.053453,2.067622,2.104012,2.126946,2.138219,2.154042,2.168905,2.203824,2.24746,2.287015,2.279697,2.282204,2.30457,2.313327,2.31032,2.300154,2.306135,2.289069,2.285636,2.284036,2.281752,2.27194,2.263761,2.273269,2.274406,2.27668,2.270761,2.285067,2.31203,2.333764,2.351733,2.379719,2.399947,2.403547,2.422054,2.449908,2.474652,2.510534,2.527857,2.547827,2.573305,2.58926,2.600911,2.612095,2.607393,2.604265,2.615723,2.632726,2.646679,2.659912,2.65672,2.663362,2.661764,2.67321,2.695932,2.723431,2.741405,2.77814,2.817868,2.845201,2.84577,2.844916,2.864262,2.874,2.882335,2.888388,2.89272,2.89272,2.914416,2.921993,2.926376,2.970272,2.995816,3.004504,3.022531,3.037039,3.04858,3.099491,3.123667,3.119606,3.096521,3.077632,3.069323,3.075461,3.084073,3.114297,3.133605,3.157421,3.165946,3.196972,3.234377,3.247638,3.269397,3.291956,3.301173,3.332534,3.395519,3.447131,3.464022,3.503512,3.548707,3.566805,3.578576,3.60792,3.668894,3.675498,3.681011,3.688373,3.694275,3.693166,3.71311,3.736873,3.739863,3.740237,3.699094,3.664693,3.640139,3.61393,3.617544,3.634547,3.641816,3.660753,3.693334,3.721403,3.724008,3.747842,3.769205,3.82122,3.892676,3.912529,3.939917,3.999804,4.035402,4.015628,3.97226,3.972657,4.007616,4.058112,4.095447,4.113876,4.146787,4.163374,4.13548,4.135066,4.163185,4.175674,4.262946,4.283408,4.281695,4.334788,4.369466,4.3817,4.450055,4.549291,4.673942,4.876791,5.034311,5.199437,5.249351,5.384784,5.52102,5.683338,5.769156,6.005691,6.041725,6.088851,6.129037,6.089811,6.128786,6.130012,6.183343,6.29588,6.411095,6.522648,6.614617,6.649013,6.688242,6.702287,6.655371,6.592145,6.528202,6.491644,6.520856,6.53455,6.530629,6.533894,6.471822,6.352741,6.230133,6.185276,6.176617,6.19947,6.230468,6.267227,6.313605,6.318024,6.285171,6.25563,6.275023,6.33087,6.38215,6.421082,6.439703,6.479629,6.578119,6.663635,6.726273,6.744434,6.815925,6.792751,6.809053,6.775689,6.662535,6.611233,6.635034,6.662901,6.638915,6.65684,6.656174,6.683464,6.634675,6.669175,6.851244,6.908794,6.87425,6.794509,6.779561,6.886],"ipca":[1.0062,1.007508,1.009725,1.013965,1.014067,1.016399,1.032763,1.046292,1.048699,1.050167,1.053528,1.059743,1.065784,1.070687,1.074755,1.080989,1.085421,1.091065,1.105576,1.113315,1.116432,1.125699,1.133691,1.14106,1.146994,1.151123,1.15803,1.167294,1.169745,1.174658,1.188637,1.196363,1.204977,1.220762,1.257629,1.284039,1.31293,1.333543,1.349945,1.36304,1.371354,1.369297,1.372036,1.376701,1.387439,1.391463,1.396194,1.403454,1.41412,1.422746,1.429433,1.434722,1.442039,1.452278,1.465493,1.475605,1.480475,1.486989,1.497249,1.510126,1.518884,1.527846,1.537166,1.550539,1.558136,1.557825,1.561719,1.564374,1.56985,1.581624,1.590322,1.596048,1.605464,1.612047,1.618979,1.622378,1.624001,1.62059,1.623669,1.624481,1.627893,1.633265,1.638328,1.646192,1.653435,1.66071,1.666855,1.671022,1.675701,1.680393,1.684426,1.692343,1.695389,1.700475,1.706937,1.719568,1.728854,1.737325,1.745664,1.755265,1.769132,1.782224,1.791669,1.796686,1.801357,1.809464,1.815978,1.821062,1.829803,1.839867,1.843547,1.852396,1.861102,1.867802,1.872285,1.875094,1.879594,1.884857,1.892585,1.899587,1.913834,1.928762,1.938791,1.949843,1.958227,1.958227,1.958423,1.959206,1.968023,1.982783,1.99924,2.011835,2.028533,2.044761,2.060915,2.076784,2.086545,2.089675,2.093018,2.100762,2.111897,2.120978,2.132007,2.142667,2.154666,2.164362,2.168907,2.182788,2.190646,2.192398,2.201826,2.210853,2.223455,2.236573,2.249993,2.267768,2.287271,2.300994,2.311809,2.324524,2.333125,2.339191,2.339893,2.345508,2.353718,2.367134,2.379916,2.401812,2.415021,2.431685,2.454057,2.470499,2.481863,2.491791,2.49204,2.49827,2.51251,2.523063,2.53593,2.55571,2.587401,2.618967,2.653538,2.672378,2.692154,2.713422,2.730245,2.736251,2.751027,2.773586,2.801599,2.828494,2.864416,2.890196,2.902624,2.92033,2.943108,2.953409,2.968767,2.981829,2.984215,2.991974,2.997359,3.006351,3.017775,3.027734,3.035303,3.039553,3.048976,3.041963,3.049264,3.055057,3.059945,3.072797,3.081401,3.094959,3.103934,3.113867,3.116669,3.123526,3.13602,3.175534,3.186013,3.183146,3.198425,3.212818,3.206071,3.21088,3.221155,3.235006,3.259269,3.277846,3.282108,3.282436,3.288672,3.29229,3.290973,3.294264,3.311065,3.349142,3.356175,3.364566,3.366921,3.356483,3.343729,3.352422,3.364491,3.372566,3.39415,3.42334,3.453808,3.500434,3.509185,3.539364,3.57228,3.583354,3.613096,3.632246,3.667115,3.699019,3.741928,3.788702,3.824694,3.852615,3.873419,3.91254,3.975924,4.018068,4.036953,4.064001,4.036366,4.021835,4.010171,4.033831,4.05037,4.075482,4.097082,4.131498,4.160832,4.186213,4.195841,4.192484,4.197515,4.20717,4.218108,4.228232,4.240071,4.263815,4.281723,4.317261,4.324169,4.340601,4.360568,4.369725,4.38633,4.385453,4.404749,4.429415,4.44669,4.469813,4.476964,4.535613,4.561012,4.580624,4.592534,4.603556,4.615525,4.610448,4.632578,4.636748,4.645094,4.660423,4.675802,4.708533,4.749968,4.781793,4.809527,4.817222,4.820594,4.805168,4.844571],"incc":[1.0107,1.018482,1.024186,1.030331,1.04424,1.051863,1.055019,1.059134,1.061887,1.065392,1.06976,1.076606,1.08285,1.086532,1.089466,1.093388,1.116458,1.129409,1.135282,1.142321,1.148604,1.159286,1.167864,1.171835,1.176054,1.182875,1.189381,1.193306,1.223496,1.23047,1.234039,1.246379,1.255228,1.269412,1.300513,1.322622,1.342593,1.361255,1.380041,1.392461,1.432007,1.447043,1.461369,1.482412,1.485674,1.495331,1.510882,1.513299,1.518293,1.533476,1.551265,1.560417,1.588973,1.600095,1.618017,1.631122,1.640583,1.660106,1.671893,1.680419,1.693022,1.700472,1.711865,1.72419,1.760226,1.773604,1.775555,1.77591,1.780172,1.783554,1.788548,1.795166,1.801269,1.804692,1.808301,1.814811,1.838767,1.855315,1.864035,1.868509,1.870564,1.874493,1.878804,1.885568,1.894053,1.89803,1.903155,1.911909,1.933896,1.951688,1.957738,1.962829,1.972839,1.982901,1.990039,2.00178,2.009387,2.017425,2.03074,2.048407,2.089785,2.129909,2.161005,2.186505,2.207277,2.224273,2.235394,2.239195,2.246584,2.25265,2.247018,2.246119,2.27734,2.293282,2.299244,2.298095,2.301542,2.302923,2.309601,2.311911,2.326707,2.335083,2.352596,2.372358,2.415298,2.441624,2.452368,2.455801,2.460958,2.46588,2.475004,2.491586,2.501802,2.508807,2.519595,2.546302,2.621164,2.630862,2.642701,2.646136,2.649841,2.655936,2.675058,2.678001,2.701835,2.709941,2.723761,2.74419,2.79578,2.816189,2.835058,2.842429,2.848682,2.854665,2.864085,2.868668,2.887314,2.904638,2.919161,2.940763,3.00693,3.04151,3.056109,3.065583,3.078765,3.08677,3.097573,3.100671,3.127957,3.138279,3.147066,3.17476,3.239843,3.261226,3.285685,3.288314,3.293246,3.298845,3.31336,3.31601,3.346518,3.356892,3.377705,3.393242,3.425478,3.488507,3.507693,3.528389,3.536151,3.548881,3.560948,3.564509,3.57841,3.597734,3.620759,3.640673,3.643586,3.713907,3.732105,3.742928,3.75528,3.763166,3.769187,3.782002,3.797508,3.822192,3.828308,3.827542,3.851656,3.887476,3.899138,3.913175,3.915523,3.927661,3.939837,3.942595,3.954817,3.959958,3.969462,3.980974,3.99013,4.028834,4.05341,4.05949,4.068827,4.083068,4.088376,4.093691,4.11375,4.117452,4.130216,4.145911,4.147155,4.18365,4.207915,4.225588,4.245026,4.252667,4.254368,4.263302,4.279503,4.293625,4.304789,4.314259,4.322888,4.337585,4.388335,4.419931,4.471202,4.548554,4.606776,4.639023,4.68031,4.768768,4.830762,4.874239,4.982447,5.090068,5.133334,5.156947,5.183248,5.227823,5.26285,5.28127,5.318767,5.338978,5.384893,5.43605,5.559992,5.678976,5.727815,5.73297,5.73813,5.745015,5.765697,5.770886,5.797433,5.800331,5.817732,5.825877,5.86025,5.901858,5.907759,5.917803,5.937923,5.949799,5.953964,5.972421,5.988547,5.996332,6.013121,6.04439,6.096371,6.139656,6.183861,6.227148,6.263266,6.305856,6.331079,6.362735,6.415545,6.441208,6.466328,6.499953,6.537653,6.582763,6.642666,6.677208,6.688559,6.708625,6.726738,6.740864,6.789398,6.808409,6.845174,6.913626,6.974466,7.028867,7.071743,7.118416,7.134077]};
+const UC_FONTE=['rs_cempre','rs_rais','rs_pnad','rs_mix_rais','rs_mix_cempre'].find(k=>DADOS[k])||'rs_cempre';
+function ucBase(){ return DADOS[UC_FONTE]; }
+const MES_NOME=['jan','fev','mar','abr','mai','jun','jul','ago','set','out','nov','dez'];
+function fillUCsetores(){
+  const s=$("uc_setor"); if(s.options.length) return;
+  const b=ucBase(); b.setores.forEach((st,i)=>{const o=document.createElement('option');o.value=i;o.textContent=st.cod+' — '+st.nome;s.appendChild(o);});
+}
+function fillUCdates(){
+  if($("uc_a0").options.length) return;
+  const anos=[...new Set(INFL.meses.map(m=>Math.floor(m/100)))].sort();
+  const addA=sel=>anos.forEach(y=>{const o=document.createElement('option');o.value=y;o.textContent=y;$(sel).appendChild(o);});
+  const addM=sel=>MES_NOME.forEach((nm,i)=>{const o=document.createElement('option');o.value=i+1;o.textContent=nm;$(sel).appendChild(o);});
+  addM('uc_m0');addA('uc_a0');addM('uc_m1');addA('uc_a1');
+  const last=INFL.meses[INFL.meses.length-1], ly=Math.floor(last/100), lm=last%100;
+  $("uc_a1").value=ly; $("uc_m1").value=lm; $("uc_a0").value=ly-3; $("uc_m0").value=lm;
+}
+function idxAt(arr,am){
+  const M=INFL.meses; if(am<=M[0])return arr[0]; if(am>=M[M.length-1])return arr[arr.length-1];
+  for(let i=0;i<M.length;i++){ if(M[i]===am)return arr[i]; if(M[i]>am)return arr[Math.max(0,i-1)]; }
+  return arr[arr.length-1];
+}
+function fmtMi(x){ return Math.abs(x)>=1 ? 'R$ '+fmtN(x,2)+' mi' : 'R$ '+fmtN(x*1e6,0); }
+function computeUCcarbon(Xmi,j){
+  const Lm=DADOS._meta&&DADOS._meta.Lrs, ei=DADOS._meta&&DADOS._meta.intrs;
+  if(!Lm||!ei) return null;
+  const n=ei.length; let tCO2=0;
+  for(let i=0;i<n;i++){ tCO2 += ei[i]*Lm[i][j]*Xmi; }
+  return tCO2;
+}
+/* ----- fases (etapas da obra) ----- */
+let UC_FASES=null;
+function mesOpts(sel){let s='';for(let k=0;k<12;k++){s+='<option value="'+(k+1)+'"'+((k+1)===sel?' selected':'')+'>'+MES_NOME[k]+'</option>';}return s;}
+function anoOpts(sel){let s='';[...new Set(INFL.meses.map(m=>Math.floor(m/100)))].forEach(y=>{s+='<option value="'+y+'"'+(y===sel?' selected':'')+'>'+y+'</option>';});return s;}
+function novaFase(){ return {decl:0,apur:0,m0:+$("uc_m0").value,a0:+$("uc_a0").value,m1:+$("uc_m1").value,a1:+$("uc_a1").value}; }
+function buildFases(){
+  const c=$("uc_fases"); if(!c) return; let h='';
+  UC_FASES.forEach((f,i)=>{
+    h+='<div class="fase"><div class="fase-h"><span class="fase-n">Fase '+(i+1)+'</span>'
+     +(UC_FASES.length>1?'<button type="button" class="fase-x" data-i="'+i+'">remover</button>':'')+'</div>'
+     +'<div class="fase-grid">'
+     +'<div><label>Declarado (R$ milhões)</label><input class="uc-input fase-f" data-i="'+i+'" data-k="decl" type="number" min="0" step="0.1" value="'+f.decl+'"></div>'
+     +'<div><label>Apurado (R$ milhões)</label><input class="uc-input fase-f" data-i="'+i+'" data-k="apur" type="number" min="0" step="0.1" value="'+f.apur+'"></div>'
+     +'<div><label>Início (padrão: data orçamentária)</label><div class="uc-dt"><select class="fase-f" data-i="'+i+'" data-k="m0">'+mesOpts(f.m0)+'</select><select class="fase-f" data-i="'+i+'" data-k="a0">'+anoOpts(f.a0)+'</select></div></div>'
+     +'<div><label>Fim da fase</label><div class="uc-dt"><select class="fase-f" data-i="'+i+'" data-k="m1">'+mesOpts(f.m1)+'</select><select class="fase-f" data-i="'+i+'" data-k="a1">'+anoOpts(f.a1)+'</select></div></div>'
+     +'</div><div class="fase-out" id="fase_out_'+i+'"></div></div>';
+  });
+  c.innerHTML=h; computeFases();
+}
+function readFases(){
+  document.querySelectorAll('#uc_fases .fase-f').forEach(el=>{
+    const i=+el.dataset.i,k=el.dataset.k; if(!UC_FASES[i])return;
+    UC_FASES[i][k]=(k==='decl'||k==='apur')?Math.max(0,parseFloat(el.value)||0):parseInt(el.value);
+  });
+}
+function faseCalc(f){
+  const arr=INFL[$("uc_idx").value];
+  let am0=f.a0*100+f.m0, am1=f.a1*100+f.m1; if(am1<am0){const t=am0;am0=am1;am1=t;}
+  const i0=idxAt(arr,am0),i1=idxAt(arr,am1),acc=i0>0?(i1/i0-1):0;
+  const corr=f.decl*(1+acc),band=f.decl*(1+acc*1.25);
+  const excInfl=Math.max(0,f.apur-corr),excBand=Math.max(0,f.apur-band);
+  return {am0,am1,acc,corr,band,excInfl,excBand,contrib:0.005*f.apur,
+    compInfl:0.005*excInfl,compBand:0.005*excBand,difBruta:0.005*Math.max(0,f.apur-f.decl),
+    meses:(Math.floor(am1/100)-Math.floor(am0/100))*12+((am1%100)-(am0%100))};
+}
+function computeFases(){
+  if(!UC_FASES) return; readFases();
+  const idxNome={incc:'INCC-M',igpm:'IGP-M',ipca:'IPCA'}[$("uc_idx").value];
+  let tDecl=0,tApur=0,tContrib=0,tCInfl=0,tCBand=0,tDif=0;
+  UC_FASES.forEach((f,i)=>{
+    const r=faseCalc(f);
+    tDecl+=f.decl;tApur+=f.apur;tContrib+=r.contrib;tCInfl+=r.compInfl;tCBand+=r.compBand;tDif+=r.difBruta;
+    const o=$("fase_out_"+i); if(!o) return;
+    o.innerHTML=
+      '<div class="fase-row"><span>Período</span><b>'+MES_NOME[(r.am0%100)-1]+'/'+Math.floor(r.am0/100)+' → '+MES_NOME[(r.am1%100)-1]+'/'+Math.floor(r.am1/100)+' ('+r.meses+' m)</b></div>'
+     +'<div class="fase-row"><span>Contribuição 0,5% (sobre apurado)</span><b class="g">'+fmtMi(r.contrib)+'</b></div>'
+     +'<div class="fase-row"><span>Inflação '+idxNome+' · corrigido · banda</span><b>'+fmtN(r.acc*100,1)+'% · '+fmtMi(r.corr)+' · '+fmtMi(r.band)+'</b></div>'
+     +'<div class="fase-row"><span>Excedente índice puro → 0,5%</span><b>'+fmtMi(r.excInfl)+' → '+fmtMi(r.compInfl)+'</b></div>'
+     +'<div class="fase-row"><span>Excedente banda +25% → 0,5%</span><b class="gold">'+fmtMi(r.excBand)+' → '+fmtMi(r.compBand)+'</b></div>';
+  });
+  const T=$("uc_fases_tot");
+  if(T) T.innerHTML = UC_FASES.length ? (
+     '<div class="fase-tot"><div class="fase-tot-h">Soma das '+UC_FASES.length+' fase'+(UC_FASES.length>1?'s':'')+'</div>'
+    +'<div class="fase-trow"><span>Declarado · Apurado (fases)</span><b>'+fmtMi(tDecl)+' · '+fmtMi(tApur)+'</b></div>'
+    +'<div class="fase-trow"><span>Contribuição total — 0,5% sobre apurado</span><b class="g">'+fmtMi(tContrib)+'</b></div>'
+    +'<div class="fase-trow"><span>Compensação adicional — índice puro</span><b>'+fmtMi(tCInfl)+'</b></div>'
+    +'<div class="fase-trow"><span>Compensação adicional — banda +25%</span><b class="gold">'+fmtMi(tCBand)+'</b></div>'
+    +'<div class="fase-trow"><span>Diferença bruta total (0,5% · apurado − declarado)</span><b>'+fmtMi(tDif)+'</b></div></div>') : '';
+}
+function ucFasesSync(){ if(UC_FASES===null){ UC_FASES=[novaFase()]; buildFases(); } else computeFases(); }
+function renderUC(){
+  fillUCsetores(); fillUCdates();
+  const X=Math.max(0,parseFloat($("uc_val").value)||0);
+  const j=parseInt($("uc_setor").value)||0;
+  const comp=0.005*X;
+  $("uc_comp").textContent=fmtMi(comp);
+  $("uc_comp_base").textContent=fmtMi(X);
+  const tCO2=computeUCcarbon(X,j), preco=precoCarbono();
+  if(tCO2!=null){
+    const custoMi=tCO2*preco/1e6;
+    $("uc_co2").textContent=fmtN(tCO2,0)+' tCO₂e';
+    $("uc_ccost").textContent=fmtMi(custoMi);
+    $("uc_cpct").textContent = X>0 ? fmtN(100*custoMi/X,1)+'% do investimento' : '—';
+    $("uc_cpreco").textContent='R$ '+fmtN(preco,0)+'/t';
+  } else {
+    $("uc_co2").textContent='—'; $("uc_ccost").textContent='—'; $("uc_cpct").textContent='—'; $("uc_cpreco").textContent='—';
+  }
+  const decl=Math.max(0,parseFloat($("uc_decl").value)||0);
+  const apur=Math.max(0,parseFloat($("uc_apur").value)||0);
+  const idxKey=$("uc_idx").value, arr=INFL[idxKey];
+  const idxNome={incc:'INCC-M',igpm:'IGP-M',ipca:'IPCA'}[idxKey];
+  let am0=parseInt($("uc_a0").value)*100+parseInt($("uc_m0").value);
+  let am1=parseInt($("uc_a1").value)*100+parseInt($("uc_m1").value);
+  if(am1<am0){ const t=am0; am0=am1; am1=t; }
+  const i0=idxAt(arr,am0), i1=idxAt(arr,am1);
+  const acc=i0>0 ? (i1/i0-1) : 0;
+  const corr=decl*(1+acc), band=decl*(1+acc*1.25);
+  const excInfl=Math.max(0,apur-corr);           // excedente sobre o índice puro
+  const exc=Math.max(0,apur-band);               // excedente sobre o índice + banda 25%
+  const compInfl=0.005*excInfl, compExc=0.005*exc;
+  const difBruta=0.005*Math.max(0,apur-decl);
+  const meses=(Math.floor(am1/100)-Math.floor(am0/100))*12+((am1%100)-(am0%100));
+  $("uc_idxnome").textContent=idxNome;
+  $("uc_per").textContent='Período: '+MES_NOME[(am0%100)-1]+'/'+Math.floor(am0/100)+' → '+MES_NOME[(am1%100)-1]+'/'+Math.floor(am1/100)+'  ('+meses+' meses)';
+  $("uc_difbruta").textContent=fmtMi(difBruta);
+  $("uc_acc").textContent=fmtN(acc*100,1)+'%';
+  $("uc_corr").textContent=fmtMi(corr);
+  $("uc_band").textContent=fmtMi(band);
+  $("uc_exc_infl").textContent=fmtMi(excInfl);
+  $("uc_comp_infl").textContent=fmtMi(compInfl);
+  $("uc_exc").textContent=fmtMi(exc);
+  $("uc_compexc").textContent=fmtMi(compExc);
+  const segInfl=Math.max(0,corr-decl), segBand=Math.max(0,band-corr);
+  const tot=Math.max(apur,band,decl)||1, pc=x=>(100*x/tot).toFixed(2)+'%';
+  $("uc_bar").innerHTML='<i class="b-base" style="width:'+pc(decl)+'"></i><i class="b-infl" style="width:'+pc(segInfl)+'"></i><i class="b-band" style="width:'+pc(segBand)+'"></i><i class="b-exc" style="width:'+pc(exc)+'"></i>';
+  const v=$("uc_verdict");
+  if(apur<=decl){
+    v.className='uc-verdict ok';
+    v.innerHTML='O valor apurado <b>não supera</b> o declarado. Não há diferença a cobrar.';
+  } else if(apur<=corr){
+    v.className='uc-verdict ok';
+    v.innerHTML='O aumento de <b>'+fmtMi(apur-decl)+'</b> é <b>totalmente explicado pela inflação</b> ('+idxNome+' acumulou '+fmtN(acc*100,1)+'% no período). Não há obra adicional — nenhuma compensação extra é devida.';
+  } else if(apur<=band){
+    v.className='uc-verdict warn';
+    v.innerHTML='O apurado supera a <b>inflação pura</b> em <b>'+fmtMi(excInfl)+'</b> (0,5% = <b>'+fmtMi(compInfl)+'</b>), mas fica <b>dentro da banda de +25%</b> — compatível com POA ter encarecido mais que o índice nacional. Pela banda, nada a cobrar; pelo critério estrito (índice puro), <b>'+fmtMi(compInfl)+'</b>.';
+  } else {
+    v.className='uc-verdict alert';
+    v.innerHTML='O apurado supera a inflação pura em <b>'+fmtMi(excInfl)+'</b> e a banda +25% em <b>'+fmtMi(exc)+'</b> — isso é <b>obra/material real adicional</b>. Compensação adicional: entre <b>'+fmtMi(compExc)+'</b> (sobre a banda) e <b>'+fmtMi(compInfl)+'</b> (sobre o índice puro).';
+  }
+  ucFasesSync();
+}
+$("uc_val").addEventListener('input',renderUC);
+$("uc_setor").addEventListener('change',renderUC);
+['uc_decl','uc_apur','uc_idx','uc_m0','uc_a0','uc_m1','uc_a1'].forEach(id=>$(id).addEventListener('input',renderUC));
+$("uc_addfase").addEventListener('click',function(){ if(!UC_FASES)UC_FASES=[]; UC_FASES.push(novaFase()); buildFases(); });
+$("uc_fases").addEventListener('input',computeFases);
+$("uc_fases").addEventListener('change',computeFases);
+$("uc_fases").addEventListener('click',function(e){var b=e.target.closest('.fase-x'); if(b){ UC_FASES.splice(+b.dataset.i,1); buildFases(); }});
+document.querySelectorAll('#win_uc .utab').forEach(b=>b.addEventListener('click',function(){
+  document.querySelectorAll('#win_uc .utab').forEach(x=>x.classList.toggle('on',x===this));
+  document.querySelectorAll('#win_uc .upane').forEach(p=>p.classList.toggle('on',p.id==='up_'+this.dataset.ut));
+}));
 </script>
 </body></html>
