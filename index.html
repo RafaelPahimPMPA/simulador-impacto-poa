@@ -430,6 +430,44 @@ tbody tr:hover{background:rgba(120,160,220,.08)}
 .fase-trow.final{border-bottom:none;border-top:1px solid var(--line2);margin-top:4px;padding-top:11px}
 .fase-trow.final span{color:var(--accent);font-family:var(--f-tit);font-size:12px;letter-spacing:.5px;text-transform:uppercase;font-weight:700}
 .fase-trow.final b{font-size:16px}
+/* botão imprimir */
+#print_btn{margin-left:auto;align-self:center;appearance:none;border:1px solid var(--line2);background:var(--vidro2);color:var(--ink);border-radius:10px;padding:9px 15px;cursor:pointer;font:inherit;font-size:13px;font-weight:600;font-family:var(--f-tit);display:inline-flex;align-items:center;gap:3px}
+#print_btn:hover{border-color:var(--steel);color:var(--accent)}
+@media(max-width:620px){#print_btn{margin-left:0}}
+
+/* ======================= IMPRESSÃO (versão limpa, clara) ======================= */
+@media print{
+  @page{margin:12mm}
+  html{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  :root{
+    --bg:#fff;--bg2:#fff;--panel:#fff;--ink:#12191f;--slate:#38434c;--faint:#5e6c76;
+    --line:#dde3e8;--line2:#c7d0d7;
+    --navy:#103a52;--steel:#0b6ea8;--teal:#157a52;--ochre:#8a6400;--brick:#9b3a28;
+    --ambar:#8a6400;--accent:#0b6ea8;--roxo:#6b3fa0;--ouro:#8a6d1f;
+    --vidro:#f4f7fa;--vidro2:#eef2f6;--sombra:none;
+  }
+  body{background:#fff !important;color:#12191f}
+  .wrap{padding-bottom:0}
+  .masthead,.topnav{background:#fff !important;backdrop-filter:none !important;position:static !important;border-bottom:0 !important}
+  .card,.scn{box-shadow:none !important;break-inside:avoid}
+  /* esconder controles de navegação e o próprio botão */
+  .winbar,#print_btn,.modebar,.ctrls,#amb_lens,.sortbar{display:none !important}
+  /* caixas de fórmula escuras → claras */
+  .psa-fxbox,.uc-fxbox{background:#eef3f8 !important;border:1px solid #c7d0d7 !important}
+  .psa-fxbox .fx-lab,.uc-fxbox .fx-lab{color:#5e6c76 !important}
+  .psa-fxbox .fx-main,.uc-fxbox .fx-main{color:#12191f !important}
+  .psa-fxbox .fx-z{color:#2a5a8a !important}
+  .psa-fxbox .fx-leg,.uc-fxbox .fx-leg,.psa-fxbox .fx-n,.uc-fxbox .fx-n{color:#157a52 !important}
+  /* veredito legível no claro */
+  .uc-verdict{color:#12191f !important}
+  .uc-verdict.ok{background:#eef7f1 !important;border-color:#bfe0cd !important}
+  .uc-verdict.warn{background:#fbf4e0 !important;border-color:#e6d2a0 !important}
+  .uc-verdict.alert{background:#fbeae5 !important;border-color:#e6c0b4 !important}
+  select,input,.btn{color:#12191f !important;background:#fff !important;border-color:#c7d0d7 !important}
+  /* evitar cortes feios */
+  .card,.uc-big,.psa-big,.fase,.fase-tot,.kpis,.uc-grid,.psa-grid,.uc-exc2,.uc-res,.table,table{break-inside:avoid}
+  a[href]:after{content:""}
+}
 </style></head><body>
 
 <div class="masthead">
@@ -467,6 +505,7 @@ tbody tr:hover{background:rgba(120,160,220,.08)}
   <button class="wbtn on" data-w="mip">Impacto econômico<span>investimento → produção, emprego, renda, emissões</span></button>
   <button class="wbtn" data-w="psa">PSA — serviços ambientais (RS)<span>pagamento por conservação · RPPN</span></button>
   <button class="wbtn" data-w="uc">Impacto Unidade de Conservação<span>compensação ambiental · SNUC 0,5% · fiscalização</span></button>
+  <button id="print_btn" onclick="window.print()" title="Imprimir ou salvar em PDF a janela aberta">&#128424;&nbsp; Imprimir / PDF</button>
  </div>
 
  <div id="win_mip">
