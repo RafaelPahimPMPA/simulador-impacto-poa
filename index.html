@@ -1064,10 +1064,10 @@ tbody tr:hover{background:rgba(120,160,220,.08)}
    <div class="card uc-res">
     <div class="hd"><h2>2 &middot; Diagnóstico</h2></div>
 
-    <div class="uc-big">
-     <div class="lb">Diferença bruta a cobrar (sem descontar inflação)</div>
-     <div class="bnum" id="uc_difbruta">—</div>
-     <div class="ex">0,5% &times; (apurado − declarado)</div>
+    <div class="uc-big gold">
+     <div class="lb">Valor final a ser pago (compensação)</div>
+     <div class="bnum" id="uc_finalpay">—</div>
+     <div class="ex" id="uc_final_ex">—</div>
     </div>
 
     <div class="uc-legend">
@@ -1098,12 +1098,6 @@ tbody tr:hover{background:rgba(120,160,220,.08)}
 
     <div class="uc-verdict ok" id="uc_verdict">—</div>
    </div>
-  </div>
-
-  <div class="uc-total" id="uc_total_box">
-   <div class="uc-total-lb">Valor final total da compensação</div>
-   <div class="uc-total-num" id="uc_total_num">—</div>
-   <div class="uc-total-ex" id="uc_total_ex">—</div>
   </div>
 
   <div class="card" id="uc_fases_card">
@@ -1777,7 +1771,6 @@ function renderUC(){
   const meses=(Math.floor(am1/100)-Math.floor(am0/100))*12+((am1%100)-(am0%100));
   $("uc_idxnome").textContent=idxNome;
   $("uc_per").textContent='Período: '+MES_NOME[(am0%100)-1]+'/'+Math.floor(am0/100)+' → '+MES_NOME[(am1%100)-1]+'/'+Math.floor(am1/100)+'  ('+meses+' meses)';
-  $("uc_difbruta").textContent=fmtMi(difBruta);
   $("uc_acc").textContent=fmtN(acc*100,1)+'%';
   $("uc_corr").textContent=fmtMi(corr);
   $("uc_band").textContent=fmtMi(band);
@@ -1785,19 +1778,15 @@ function renderUC(){
   $("uc_comp_infl").textContent=fmtMi(compInfl);
   $("uc_exc").textContent=fmtMi(exc);
   $("uc_compexc").textContent=fmtMi(compExc);
-  // valor final total = compensação-base (0,5% do declarado) + adicional real
+  // 1º quadrante: valor final a pagar = compensação-base (0,5% do declarado) + adicional real
   const baseComp=0.005*decl, totalBanda=baseComp+compExc, totalInfl=baseComp+compInfl;
-  $("uc_total_num").textContent=fmtMi(totalBanda);
-  const tbox=$("uc_total_box");
+  $("uc_finalpay").textContent=fmtMi(totalBanda);
   if(excInfl<=0){
-    tbox.className='uc-total';
-    $("uc_total_ex").innerHTML='Só a <b>compensação-base</b>: 0,5% × '+fmtMi(decl)+' (declarado) = <b>'+fmtMi(baseComp)+'</b>. O aumento apurado é explicado pela inflação — <b>nada a somar</b>.';
+    $("uc_final_ex").innerHTML='só a compensação-base: 0,5% × '+fmtMi(decl)+' (o aumento é inflação)';
   } else if(exc<=0){
-    tbox.className='uc-total';
-    $("uc_total_ex").innerHTML='<b>'+fmtMi(totalBanda)+'</b> = só a compensação-base ('+fmtMi(baseComp)+'). O apurado supera o índice puro, mas fica <b>dentro da banda +25%</b> — pela banda, nada a somar. Pelo critério estrito (índice puro) seria <b>'+fmtMi(totalInfl)+'</b>.';
+    $("uc_final_ex").innerHTML='compensação-base '+fmtMi(baseComp)+' — aumento dentro da banda +25%; pelo índice puro: '+fmtMi(totalInfl);
   } else {
-    tbox.className='uc-total alert';
-    $("uc_total_ex").innerHTML='<b>'+fmtMi(totalBanda)+'</b> = compensação-base '+fmtMi(baseComp)+' (0,5% do declarado) + adicional '+fmtMi(compExc)+' (excedente real acima da banda). Pelo critério estrito (índice puro): <b>'+fmtMi(totalInfl)+'</b>.';
+    $("uc_final_ex").innerHTML='base '+fmtMi(baseComp)+' + adicional '+fmtMi(compExc)+' · pelo índice puro: '+fmtMi(totalInfl);
   }
   const segInfl=Math.max(0,corr-decl), segBand=Math.max(0,band-corr);
   const tot=Math.max(apur,band,decl)||1, pc=x=>(100*x/tot).toFixed(2)+'%';
